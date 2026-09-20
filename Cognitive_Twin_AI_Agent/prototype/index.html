@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SALI — AI Tutor & Student Cognitive Twin Chat</title>
+  <meta name="description" content="Interactive AI Tutor Chat demonstrating 5 adaptive learning AI Agents with student profile and live cognitive tracing.">
+  <link rel="stylesheet" href="css/portal.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+</head>
+<body>
+
+  <!-- =========================================================================
+       APP WRAPPER (SIDEBAR + CHAT INTERFACE)
+       ========================================================================= -->
+  <div class="chat-app-layout">
+
+    <!-- ── SIDEBAR: STUDENT PROFILE & COURSES ───────────────────────────────── -->
+    <aside class="chat-sidebar">
+      
+      <!-- Student Profile Header -->
+      <div class="student-profile-panel">
+        <div class="profile-avatar-row">
+          <div class="student-avatar">KE</div>
+          <div class="student-meta">
+            <h3 class="student-name">Kareem Ezzaldin</h3>
+            <span class="student-id">STD-2026-904</span>
+          </div>
+        </div>
+        <div class="profile-subtext">
+          <span>🎓 B.Sc. Artificial Intelligence</span>
+          <span class="streak-pill">🔥 8 Day Streak</span>
+        </div>
+      </div>
+
+      <!-- Course Selection -->
+      <div class="sidebar-section">
+        <label class="section-label" for="courseDropdown">Enrolled Course Subject</label>
+        <select id="courseDropdown" class="sidebar-select">
+          <!-- Populated by JS -->
+        </select>
+      </div>
+
+      <!-- Concepts & Mastery Vector (Agent 1) -->
+      <div class="sidebar-section" style="flex: 1; overflow-y: auto;">
+        <div class="section-header-row">
+          <label class="section-label">Course Concepts & Mastery</label>
+          <span class="agent-chip">Agent 1: BKT</span>
+        </div>
+
+        <div class="concepts-stack" id="conceptsStack">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Agent 3 Trigger & Actions -->
+      <div class="sidebar-footer">
+        <button id="btnAskAdaptiveQ" class="btn-sidebar-primary">
+          <span>🎲 Ask Tutor for Adaptive Question</span>
+        </button>
+        <button id="btnClearChat" class="btn-sidebar-secondary">
+          <span>🧹 Clear Conversation</span>
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- ── MAIN CHAT AREA ───────────────────────────────────────────────────── -->
+    <main class="chat-main-area">
+
+      <!-- Chat Topbar -->
+      <header class="chat-topbar">
+        <div class="topbar-info">
+          <div class="active-badge-dot"></div>
+          <div>
+            <h2 id="chatActiveTopic">Pointers & Object References</h2>
+            <p id="chatActiveCourseName">Python Systems & Memory Architecture</p>
+          </div>
+        </div>
+
+        <div class="topbar-telemetry">
+          <div class="telemetry-pill">
+            <span class="pill-label">Mastery P(L):</span>
+            <strong id="topbarMastery" style="color: var(--accent-cyan);">35%</strong>
+          </div>
+          <div class="telemetry-pill">
+            <span class="pill-label">Stability:</span>
+            <strong id="topbarStability">2.4d</strong>
+          </div>
+          <div class="agents-status-pill">
+            <span class="status-indicator-dot"></span>
+            <span>5 AI Agents Active</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Chat Messages Container -->
+      <div class="chat-messages-scroll" id="chatMessagesScroll">
+        <!-- Messages dynamically rendered here -->
+      </div>
+
+      <!-- Chat Quick Chips (Misconception Presets) -->
+      <div class="chat-quick-chips" id="chatQuickChips">
+        <span class="chips-label">💡 Test Quick Misconceptions:</span>
+        <div class="chips-container" id="chipsContainer">
+          <!-- Chips injected by JS based on current concept -->
+        </div>
+      </div>
+
+      <!-- Chat Input Area -->
+      <footer class="chat-input-footer">
+        <div class="input-form-box">
+          <textarea 
+            id="chatInputText" 
+            class="chat-textarea" 
+            placeholder="Type your answer, ask a question, or explain your thinking in Arabic or English..."
+            rows="1"></textarea>
+          <button id="btnSendMessage" class="btn-send-message" title="Send Message">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+        <div class="input-disclaimer">
+          Responses are continuously evaluated by Agent 2 (Misconception Detection) & Agent 4 (Pedagogical Adaptor).
+        </div>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <script src="js/portal.js"></script>
+</body>
+</html>

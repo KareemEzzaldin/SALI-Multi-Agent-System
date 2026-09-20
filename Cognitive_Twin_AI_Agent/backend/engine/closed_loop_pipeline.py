@@ -207,7 +207,7 @@ class ClosedLoopPipeline:
             learner_answer=current.learner_answer,
             course_evidence_text=evidence.source_text,
             misconception_signal=misconception,
-            override_p_known=current_mastery + state_update.mastery_delta
+            override_p_known=max(0.0, min(1.0, current_mastery + state_update.mastery_delta))
         )
         action_eval = NextActionEngine.execute_decision_pipeline(
             req=decision_req,

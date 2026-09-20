@@ -1,0 +1,22 @@
+[
+  {
+    "concept_name": "Pointers & Object References",
+    "mastery_score": 0.2046,
+    "last_practiced": "2026-09-20"
+  },
+  {
+    "concept_name": "Mutable Default Arguments",
+    "mastery_score": 0.58,
+    "last_practiced": "2026-09-19"
+  },
+  {
+    "concept_name": "Recursion & Call Stack Frames",
+    "mastery_score": 0.42,
+    "last_practiced": "2026-09-17"
+  },
+  {
+    "concept_name": "Variable Scope & Closures",
+    "mastery_score": 0.81,
+    "last_practiced": "2026-09-15"
+  }
+]
