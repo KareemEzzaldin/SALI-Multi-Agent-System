@@ -1,0 +1,32 @@
+[
+  {
+    "concept_name": "Python Functions",
+    "mastery_score": 0.1,
+    "last_practiced": "2026-09-17"
+  },
+  {
+    "concept_name": "Recursion",
+    "mastery_score": 0.05,
+    "last_practiced": "2026-09-03"
+  },
+  {
+    "concept_name": "List Comprehensions",
+    "mastery_score": 0.1,
+    "last_practiced": "2026-09-10"
+  },
+  {
+    "concept_name": "Variables & Types",
+    "mastery_score": 0.55,
+    "last_practiced": "2026-09-17"
+  },
+  {
+    "concept_name": "Control Flow",
+    "mastery_score": 0.4,
+    "last_practiced": "2026-09-16"
+  },
+  {
+    "concept_name": "Loops",
+    "mastery_score": 0.35,
+    "last_practiced": "2026-09-10"
+  }
+]
