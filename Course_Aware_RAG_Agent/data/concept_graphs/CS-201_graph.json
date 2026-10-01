@@ -1,0 +1,142 @@
+{
+  "course_id": "CS-201",
+  "course_title": "Data Structures",
+  "nodes": [
+    {
+      "concept_id": "CON-1",
+      "name": "Foundational Architecture of Data Struct",
+      "description": "Core conceptual study of Foundational Architecture of Data Structures",
+      "difficulty": "beginner",
+      "estimated_learning_hours": 1.5,
+      "linked_outcome_ids": [
+        "CLO-1"
+      ],
+      "key_terms": [
+        "Foundational",
+        "Architecture",
+        "Data",
+        "Structures"
+      ]
+    },
+    {
+      "concept_id": "CON-2",
+      "name": "Core Data Representation & Primitive Ope",
+      "description": "Core conceptual study of Core Data Representation & Primitive Operations in Data Structures",
+      "difficulty": "beginner",
+      "estimated_learning_hours": 2.25,
+      "linked_outcome_ids": [
+        "CLO-1"
+      ],
+      "key_terms": [
+        "Core",
+        "Data",
+        "Representation",
+        "Primitive"
+      ]
+    },
+    {
+      "concept_id": "CON-3",
+      "name": "Algorithmic Control Flow & State Manipul",
+      "description": "Core conceptual study of Algorithmic Control Flow & State Manipulation in Data Structures",
+      "difficulty": "intermediate",
+      "estimated_learning_hours": 3.0,
+      "linked_outcome_ids": [
+        "CLO-1"
+      ],
+      "key_terms": [
+        "Algorithmic",
+        "Control",
+        "Flow",
+        "State"
+      ]
+    },
+    {
+      "concept_id": "CON-4",
+      "name": "Advanced Memory Structures & Concurrency",
+      "description": "Core conceptual study of Advanced Memory Structures & Concurrency in Data Structures",
+      "difficulty": "intermediate",
+      "estimated_learning_hours": 3.75,
+      "linked_outcome_ids": [
+        "CLO-1"
+      ],
+      "key_terms": [
+        "Advanced",
+        "Memory",
+        "Structures",
+        "Concurrency"
+      ]
+    },
+    {
+      "concept_id": "CON-5",
+      "name": "System Optimization & Scalability in Dat",
+      "description": "Core conceptual study of System Optimization & Scalability in Data Structures",
+      "difficulty": "advanced",
+      "estimated_learning_hours": 4.5,
+      "linked_outcome_ids": [
+        "CLO-1"
+      ],
+      "key_terms": [
+        "System",
+        "Optimization",
+        "Scalability",
+        "Data"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "CON-1",
+      "target_id": "CON-2",
+      "relation_type": "prerequisite_of",
+      "weight": 1.0,
+      "explanation": "Mastery of Foundational Architecture of Data Struct is an essential foundational prerequisite before learning Core Data Representation & Primitive Ope."
+    },
+    {
+      "source_id": "CON-2",
+      "target_id": "CON-3",
+      "relation_type": "prerequisite_of",
+      "weight": 1.0,
+      "explanation": "Mastery of Core Data Representation & Primitive Ope is an essential foundational prerequisite before learning Algorithmic Control Flow & State Manipul."
+    },
+    {
+      "source_id": "CON-3",
+      "target_id": "CON-4",
+      "relation_type": "prerequisite_of",
+      "weight": 1.0,
+      "explanation": "Mastery of Algorithmic Control Flow & State Manipul is an essential foundational prerequisite before learning Advanced Memory Structures & Concurrency."
+    },
+    {
+      "source_id": "CON-4",
+      "target_id": "CON-5",
+      "relation_type": "prerequisite_of",
+      "weight": 1.0,
+      "explanation": "Mastery of Advanced Memory Structures & Concurrency is an essential foundational prerequisite before learning System Optimization & Scalability in Dat."
+    },
+    {
+      "source_id": "CON-2",
+      "target_id": "CON-4",
+      "relation_type": "extends",
+      "weight": 0.7,
+      "explanation": "Builds upon foundational state representation."
+    }
+  ],
+  "is_dag": true,
+  "topological_learning_path": [
+    "CON-1",
+    "CON-2",
+    "CON-3",
+    "CON-4",
+    "CON-5"
+  ],
+  "detected_cycles": [],
+  "root_concepts": [
+    "CON-1"
+  ],
+  "terminal_concepts": [
+    "CON-5"
+  ],
+  "created_at": "2026-10-01T07:52:24.954794Z",
+  "metadata": {
+    "model_engine": "heuristic_fallback"
+  }
+}

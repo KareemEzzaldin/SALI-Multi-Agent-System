@@ -1,0 +1,99 @@
+{
+  "course_id": "CS-401",
+  "course_title": "Advanced Operating Systems",
+  "academic_level": "Senior Undergraduate",
+  "total_outcomes": 6,
+  "outcomes": [
+    {
+      "outcome_id": "CLO-1",
+      "title": "Core Competency: Course: Advanced Operating Systems",
+      "description": "Course: Advanced Operating Systems",
+      "bloom_level": "understand",
+      "action_verbs": [
+        "explain",
+        "demonstrate"
+      ],
+      "target_skills": [
+        "Advanced Operating Systems",
+        "Topic-1"
+      ],
+      "assessment_rubric_hint": "Ask student to explain mechanism in their own words or contrast with related ideas."
+    },
+    {
+      "outcome_id": "CLO-2",
+      "title": "Core Competency: Understand virtual memory architectures, pagi...",
+      "description": "Understand virtual memory architectures, paging tables, and TLB mechanisms.",
+      "bloom_level": "create",
+      "action_verbs": [
+        "architect"
+      ],
+      "target_skills": [
+        "Advanced Operating Systems",
+        "Topic-2"
+      ],
+      "assessment_rubric_hint": "Task student with designing a complete system specification or novel solution."
+    },
+    {
+      "outcome_id": "CLO-3",
+      "title": "Core Competency: Implement custom user-space threading library...",
+      "description": "Implement custom user-space threading library using setjmp/longjmp or ucontext.",
+      "bloom_level": "apply",
+      "action_verbs": [
+        "implement"
+      ],
+      "target_skills": [
+        "Advanced Operating Systems",
+        "Topic-3"
+      ],
+      "assessment_rubric_hint": "Present a concrete problem scenario and evaluate code implementation or calculation."
+    },
+    {
+      "outcome_id": "CLO-4",
+      "title": "Core Competency: Analyze cache coherence protocols (MESI) in s...",
+      "description": "Analyze cache coherence protocols (MESI) in symmetric multiprocessing systems.",
+      "bloom_level": "analyze",
+      "action_verbs": [
+        "analyze"
+      ],
+      "target_skills": [
+        "Advanced Operating Systems",
+        "Topic-4"
+      ],
+      "assessment_rubric_hint": "Give contrasting architectures or edge-cases and evaluate identification of trade-offs."
+    },
+    {
+      "outcome_id": "CLO-5",
+      "title": "Core Competency: Evaluate kernel scheduler latency under heavy...",
+      "description": "Evaluate kernel scheduler latency under heavy real-time I/O workloads.",
+      "bloom_level": "evaluate",
+      "action_verbs": [
+        "evaluate"
+      ],
+      "target_skills": [
+        "Advanced Operating Systems",
+        "Topic-5"
+      ],
+      "assessment_rubric_hint": "Require defense or critique of an engineering choice with quantitative justification."
+    },
+    {
+      "outcome_id": "CLO-6",
+      "title": "Core Competency: Design and construct a distributed fault-tole...",
+      "description": "Design and construct a distributed fault-tolerant key-value store.",
+      "bloom_level": "create",
+      "action_verbs": [
+        "design"
+      ],
+      "target_skills": [
+        "Advanced Operating Systems",
+        "Topic-6"
+      ],
+      "assessment_rubric_hint": "Task student with designing a complete system specification or novel solution."
+    }
+  ],
+  "created_at": "2026-10-01T07:47:21.309653Z",
+  "metadata": {
+    "source": "deterministic_pedagogical_engine",
+    "target_model": "Claude 3.5 Sonnet",
+    "notes": "API key not detected; generated via SALI pedagogical rules engine."
+  }
+}

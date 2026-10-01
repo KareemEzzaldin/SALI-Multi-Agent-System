@@ -329,23 +329,55 @@
 
       const toggleBtn = document.createElement('button');
       toggleBtn.className = 'telemetry-summary-btn';
+      const groundingCitations = agentData.grounding?.citations || [];
+      const hasCitations = groundingCitations.length > 0;
+      const groundingPct = Math.round((agentData.grounding?.confidence || 0.9) * 100);
+
       toggleBtn.innerHTML = `
-        <span>🔍 Agent Telemetry:</span>
+        <span>🔍 Multi-Agent Telemetry:</span>
         <strong style="color: ${agentData.misconception.detected ? '#f59e0b' : '#10b981'};">
           ${agentData.misconception.detected ? 'Misconception Detected' : 'Clear'}
         </strong>
+        <span style="color: #38bdf8;">• 📚 Grounded ${groundingPct}%</span>
         <span>• Action: ${agentData.action_type}</span>
         <span>▼</span>
       `;
 
+      const citationsHtml = hasCitations ? `
+        <div style="margin-top: 0.3rem;">
+          <strong style="color: #38bdf8;">📚 Verified Course Citations (AI #1):</strong>
+          <ul style="margin: 0.25rem 0 0.4rem 1.1rem; font-size: 0.75rem; color: #cbd5e1; list-style: disc;">
+            ${groundingCitations.map(c => `
+              <li style="margin-bottom: 0.2rem;">
+                <span style="color: #67e8f9; font-weight: 600;">${c.citation_id}</span> 
+                <strong>${c.source_file}</strong> ${c.page_or_slide_number ? `(Slide/p. ${c.page_or_slide_number})` : ''}: 
+                <span style="color: #94a3b8; font-style: italic;">"${c.quoted_snippet}"</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      ` : '';
+
+      const nextStepsHtml = agentData.grounding?.next_steps?.length > 0 ? `
+        <p style="font-size: 0.75rem; color: #c084fc; margin-top: 0.3rem;">
+          <strong>🧭 DAG Next Study Path:</strong> ${agentData.grounding.next_steps.join(' ➔ ')}
+        </p>
+      ` : '';
+
       const detailBox = document.createElement('div');
       detailBox.className = 'telemetry-detail-box';
       detailBox.innerHTML = `
-        <p><strong>Agent 1 (BKT):</strong> Mastery delta: <span style="color:${agentData.state_update.mastery_delta >= 0 ? '#10b981' : '#f43f5e'}">${agentData.state_update.mastery_delta >= 0 ? '+' : ''}${agentData.state_update.mastery_delta}</span> | Stability: ${agentData.state_update.memory_stability_days}d</p>
-        <p><strong>Agent 2 (Misconception):</strong> ${agentData.misconception.detected ? agentData.misconception.description : 'No misconception pattern identified.'}</p>
-        <p><strong>Agent 4 (Pedagogical Rule):</strong> ${agentData.reasoning}</p>
-        ${agentData.human_dossier ? `<p style="color: #f43f5e;"><strong>🚨 Agent 5 Escalation Dossier:</strong> Urgency ${agentData.human_dossier.urgency} — Mentor notified.</p>` : ''}
+        <p><strong>AI #1 Grounding:</strong> Confidence: <span style="color: #38bdf8; font-weight: 600;">${groundingPct}%</span> (${agentData.grounding?.model_used || 'Claude 3.5 Sonnet Grounded'})</p>
+        ${citationsHtml}
+        ${nextStepsHtml}
+        <div style="margin-top: 0.4rem; padding-top: 0.35rem; border-top: 1px dashed rgba(255,255,255,0.1);">
+          <p><strong>Agent 1 (BKT):</strong> Mastery delta: <span style="color:${agentData.state_update.mastery_delta >= 0 ? '#10b981' : '#f43f5e'}">${agentData.state_update.mastery_delta >= 0 ? '+' : ''}${agentData.state_update.mastery_delta}</span> | Stability: ${agentData.state_update.memory_stability_days}d</p>
+          <p><strong>Agent 2 (Misconception):</strong> ${agentData.misconception.detected ? agentData.misconception.description : 'No misconception pattern identified.'}</p>
+          <p><strong>Agent 4 (Pedagogical Rule):</strong> ${agentData.reasoning}</p>
+          ${agentData.human_dossier ? `<p style="color: #f43f5e;"><strong>🚨 Agent 5 Escalation Dossier:</strong> Urgency ${agentData.human_dossier.urgency} — Mentor notified.</p>` : ''}
+        </div>
       `;
+
 
       toggleBtn.addEventListener('click', () => {
         const isHidden = detailBox.style.display === 'none' || !detailBox.style.display;

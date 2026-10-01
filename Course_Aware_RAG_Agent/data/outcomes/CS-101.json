@@ -1,0 +1,56 @@
+{
+  "course_id": "CS-101",
+  "course_title": "Introduction to Computer Science",
+  "academic_level": "Freshman",
+  "total_outcomes": 3,
+  "outcomes": [
+    {
+      "outcome_id": "CLO-1",
+      "title": "Core Competency: Define variable types",
+      "description": "Define variable types",
+      "bloom_level": "remember",
+      "action_verbs": [
+        "define"
+      ],
+      "target_skills": [
+        "Introduction to Computer Science",
+        "Topic-1"
+      ],
+      "assessment_rubric_hint": "Provide factual recall multiple-choice question or terminology fill-in."
+    },
+    {
+      "outcome_id": "CLO-2",
+      "title": "Core Competency: Solve problems using loops",
+      "description": "Solve problems using loops",
+      "bloom_level": "apply",
+      "action_verbs": [
+        "solve"
+      ],
+      "target_skills": [
+        "Introduction to Computer Science",
+        "Topic-2"
+      ],
+      "assessment_rubric_hint": "Present a concrete problem scenario and evaluate code implementation or calculation."
+    },
+    {
+      "outcome_id": "CLO-3",
+      "title": "Core Competency: Evaluate code efficiency",
+      "description": "Evaluate code efficiency",
+      "bloom_level": "evaluate",
+      "action_verbs": [
+        "evaluate"
+      ],
+      "target_skills": [
+        "Introduction to Computer Science",
+        "Topic-3"
+      ],
+      "assessment_rubric_hint": "Require defense or critique of an engineering choice with quantitative justification."
+    }
+  ],
+  "created_at": "2026-10-01T07:47:39.814291Z",
+  "metadata": {
+    "source": "deterministic_pedagogical_engine",
+    "target_model": "Claude 3.5 Sonnet",
+    "notes": "API key not detected; generated via SALI pedagogical rules engine."
+  }
+}
