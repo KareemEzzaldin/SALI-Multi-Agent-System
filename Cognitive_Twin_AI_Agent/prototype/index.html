@@ -18,8 +18,8 @@
     <!-- ── SIDEBAR: STUDENT PROFILE & COURSES ───────────────────────────────── -->
     <aside class="chat-sidebar">
       
-      <!-- Student Profile Header -->
-      <div class="student-profile-panel">
+      <!-- Student Profile Header (Clickable to inspect student cognitive file) -->
+      <div class="student-profile-panel" id="btnOpenProfileModal" title="اضغط لعرض الملف المعرفي الكامل للطالب">
         <div class="profile-avatar-row">
           <div class="student-avatar">KE</div>
           <div class="student-meta">
@@ -31,7 +31,9 @@
           <span>🎒 Primary 5 — الصف الخامس الابتدائي</span>
           <span class="streak-pill">🔥 6 Day Streak</span>
         </div>
-
+        <div style="margin-top: 0.45rem; font-size: 0.72rem; color: #a5b4fc; display: flex; align-items: center; gap: 0.3rem;">
+          <span>🔍</span> <span>عرض الملف المعرفي للطالب (Cognitive Twin)</span>
+        </div>
       </div>
 
       <!-- Course Selection -->
@@ -133,6 +135,28 @@
 
   </div>
 
-  <script src="js/portal.js?v=4.0"></script>
+  <!-- =========================================================================
+       STUDENT COGNITIVE PROFILE MODAL (الملف المعرفي للطالب)
+       ========================================================================= -->
+  <div id="studentProfileModal" class="student-profile-modal-overlay" style="display: none;">
+    <div class="student-profile-modal-content">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div class="student-avatar" style="width: 44px; height: 44px; font-size: 1.1rem;">KE</div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; color: #fff;">الملف المعرفي للطالب (Student Cognitive Twin Dossier)</h3>
+            <span style="font-size: 0.8rem; color: #94a3b8;">تحديث ومتابعة حية عبر نموذج المعرفة البايزي (BKT + Ebbinghaus)</span>
+          </div>
+        </div>
+        <button id="btnCloseProfileModal" class="btn-close-modal" type="button" title="إغلاق">&times;</button>
+      </div>
+
+      <div class="modal-body" id="profileModalBody">
+        <!-- Injected dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/portal.js?v=4.1"></script>
 </body>
 </html>

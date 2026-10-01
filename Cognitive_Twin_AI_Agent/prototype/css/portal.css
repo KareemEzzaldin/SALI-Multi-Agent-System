@@ -866,3 +866,105 @@ body {
   color: var(--text-secondary);
 }
 
+/* ==========================================================================
+   STUDENT COGNITIVE PROFILE MODAL
+   ========================================================================== */
+
+.student-profile-panel {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.student-profile-panel:hover {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.student-profile-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 10, 19, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.student-profile-modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  max-width: 680px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  animation: modalFadeIn 0.25s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.8rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.btn-close-modal:hover {
+  color: #fff;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  direction: rtl;
+  text-align: right;
+}
+
+.profile-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.profile-metric-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  text-align: center;
+}
+
+.profile-metric-card .val {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin-top: 0.25rem;
+}
+
+.profile-metric-card .lbl {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+

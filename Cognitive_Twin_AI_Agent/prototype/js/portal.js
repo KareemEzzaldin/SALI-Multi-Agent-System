@@ -27,6 +27,10 @@
     btnNextQ: document.getElementById('btnNextQ'),
     btnExplainConcept: document.getElementById('btnExplainConcept'),
     btnClearChat: document.getElementById('btnClearChat'),
+    btnOpenProfileModal: document.getElementById('btnOpenProfileModal'),
+    btnCloseProfileModal: document.getElementById('btnCloseProfileModal'),
+    studentProfileModal: document.getElementById('studentProfileModal'),
+    profileModalBody: document.getElementById('profileModalBody'),
     chatActiveTopic: document.getElementById('chatActiveTopic'),
     chatActiveCourseName: document.getElementById('chatActiveCourseName'),
     topbarMastery: document.getElementById('topbarMastery'),
@@ -90,8 +94,97 @@
       });
     }
 
+    if (el.btnOpenProfileModal) {
+      el.btnOpenProfileModal.addEventListener('click', openStudentProfileModal);
+    }
+
+    if (el.btnCloseProfileModal) {
+      el.btnCloseProfileModal.addEventListener('click', closeStudentProfileModal);
+    }
+
+    if (el.studentProfileModal) {
+      el.studentProfileModal.addEventListener('click', (e) => {
+        if (e.target === el.studentProfileModal) {
+          closeStudentProfileModal();
+        }
+      });
+    }
+
     el.btnAskAdaptiveQ.addEventListener('click', handleAskAdaptiveQuestion);
     el.btnClearChat.addEventListener('click', handleClearChat);
+  }
+
+  function openStudentProfileModal() {
+    if (!el.studentProfileModal) return;
+    renderStudentProfileContent();
+    el.studentProfileModal.style.display = 'flex';
+  }
+
+  function closeStudentProfileModal() {
+    if (!el.studentProfileModal) return;
+    el.studentProfileModal.style.display = 'none';
+  }
+
+  function renderStudentProfileContent() {
+    if (!el.profileModalBody) return;
+
+    let coursesHtml = '';
+    coursesData.forEach(course => {
+      const conceptsListHtml = course.concepts.map(c => {
+        const pct = Math.round((c.mastery || 0.4) * 100);
+        return `
+          <div style="margin-bottom: 0.65rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.25rem;">
+              <span style="color: #f1f5f9; font-weight: 500;">${c.concept_name}</span>
+              <strong style="color: var(--accent-cyan);">${pct}%</strong>
+            </div>
+            <div style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden;">
+              <div style="width: ${pct}%; height: 100%; background: linear-gradient(90deg, var(--accent-indigo), var(--accent-cyan));"></div>
+            </div>
+            <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.15rem;">
+              استقرار الذاكرة: ${c.stability || 2.0} أيام • منحنى إبنجهاوس
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      coursesHtml += `
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.95rem; margin-bottom: 0.75rem;">
+          <h4 style="margin: 0 0 0.65rem 0; font-size: 0.95rem; color: #a5b4fc;">📚 ${course.course_title}</h4>
+          ${conceptsListHtml}
+        </div>
+      `;
+    });
+
+    el.profileModalBody.innerHTML = `
+      <div class="profile-metric-grid">
+        <div class="profile-metric-card">
+          <div class="lbl">المؤشر المعرفي العام</div>
+          <div class="val">68%</div>
+        </div>
+        <div class="profile-metric-card">
+          <div class="lbl">أيام الالتزام المستمرة</div>
+          <div class="val" style="color: #f59e0b;">🔥 6 أيام</div>
+        </div>
+        <div class="profile-metric-card">
+          <div class="lbl">متوسط استقرار الذاكرة</div>
+          <div class="val" style="color: #10b981;">3.8 أيام</div>
+        </div>
+      </div>
+
+      <div style="background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25); border-radius: 8px; padding: 0.9rem;">
+        <h4 style="margin: 0 0 0.35rem 0; color: #c4b5fd; font-size: 0.9rem;">👤 بيانات الطالب المسجلة في النظام:</h4>
+        <p style="margin: 0.2rem 0; font-size: 0.82rem; color: #cbd5e1;"><strong>الاسم:</strong> ${studentProfile.name}</p>
+        <p style="margin: 0.2rem 0; font-size: 0.82rem; color: #cbd5e1;"><strong>المعرف الأكاديمي:</strong> STD-PRI5-104</p>
+        <p style="margin: 0.2rem 0; font-size: 0.82rem; color: #cbd5e1;"><strong>المرحلة الدراسية:</strong> الصف الخامس الابتدائي — الفصل الدراسي الأول</p>
+        <p style="margin: 0.2rem 0; font-size: 0.82rem; color: #cbd5e1;"><strong>النموذج المعرفي:</strong> Bayesian Knowledge Tracing (BKT) + Ebbinghaus Memory Decay Engine</p>
+      </div>
+
+      <div>
+        <h4 style="margin: 0 0 0.5rem 0; font-size: 0.92rem; color: #f8fafc;">📊 مصفوفة إتقان المناهج (Knowledge Tracing Vector):</h4>
+        ${coursesHtml}
+      </div>
+    `;
   }
 
   // ─────────────────────────────────────────────
