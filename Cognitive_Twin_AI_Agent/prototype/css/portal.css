@@ -674,7 +674,130 @@ body {
 
 .input-disclaimer {
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
 }
+
+/* ==========================================================================
+   INTERACTIVE MCQ OPTIONS & SIMPLIFIED UI ENHANCEMENTS
+   ========================================================================== */
+
+.rtl-text {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+.ltr-text {
+  direction: ltr;
+  text-align: left;
+}
+
+.rtl-bubble {
+  direction: rtl;
+  text-align: right;
+}
+
+.ltr-bubble {
+  direction: ltr;
+  text-align: left;
+}
+
+.mcq-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.85rem;
+  width: 100%;
+}
+
+.mcq-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.mcq-option-btn:hover {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: var(--accent-indigo);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25);
+}
+
+.mcq-option-btn:active {
+  transform: translateY(0);
+}
+
+.mcq-key-pill {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(99, 102, 241, 0.4);
+}
+
+.mcq-option-btn:hover .mcq-key-pill {
+  background: var(--accent-indigo);
+  color: white;
+}
+
+.mcq-text-content {
+  flex: 1;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.grounded-source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  background: rgba(6, 182, 212, 0.1);
+  color: #38bdf8;
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: var(--radius-full);
+  padding: 0.2rem 0.6rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.simple-teacher-accordion {
+  margin-top: 0.6rem;
+}
+
+.simple-teacher-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+}
+
+.simple-teacher-toggle:hover {
+  color: var(--text-secondary);
+}
+

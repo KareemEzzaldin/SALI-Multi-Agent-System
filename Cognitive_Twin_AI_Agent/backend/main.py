@@ -155,24 +155,129 @@ async def chat_with_tutor(req: ChatMessageRequest):
 
     msg_lower = req.student_message.lower().strip()
     
-    # Dynamic check if student answer matches misconception presets or correct answer
+    # ── Intelligent Pedagogical Answer Evaluator ──
     import re
     sample_q = concept.get("sample_question", {})
+    options = sample_q.get("options", [])
+    accepted_variants = [v.lower().strip() for v in sample_q.get("accepted_text_answers", [])]
     presets = sample_q.get("misconception_presets", [])
-    matched_misconception = None
 
-    for p in presets:
-        p_ans = p.get("answer", "").lower()
-        p_keywords = [w for w in re.findall(r"[\w\u0600-\u06FF]+", p_ans) if len(w) >= 3]
-        if any(kw in msg_lower for kw in p_keywords):
-            matched_misconception = p.get("expected_misconception") or p.get("title")
+    is_correct = False
+    matched_misconception = None
+    clean_msg = re.sub(r"[^\w\u0600-\u06FF\s<>=/]", " ", msg_lower).strip()
+
+    # Known distinctive error triggers (never match on shared common words like 'visited')
+    DISTINCT_MISCONCEPTIONS = {
+        "c_past_simple": [
+            ("goed", "Over-regularization: adding -ed to irregular 'go'"),
+            ("didn't went", "Double past error after didn't"),
+            ("didnt went", "Double past error after didn't"),
+            ("buyed", "Adding -ed to irregular buy")
+        ],
+        "c_nouns_quantifiers": [
+            ("many water", "Pluralizing uncountable liquids"),
+            ("many milk", "Using many with uncountable milk"),
+            ("some milk", "Using 'some' in negative clause"),
+            ("waters", "Pluralizing uncountable water")
+        ],
+        "c_comparatives_superlatives": [
+            ("more fast", "Using 'more' with short adjective 'fast'"),
+            ("most fast", "Using 'most' with short adjective 'fast'"),
+            ("more faster", "Double comparative stacking"),
+            ("most fastest", "Double superlative stacking")
+        ],
+        "c_egypt_ecosystems": [
+            ("only animal", "Excluding non-living elements from ecosystem"),
+            ("animals only", "Excluding non-living elements from ecosystem")
+        ],
+        "c_decimals_place_value": [
+            ("0.25 أكبر", "مغالطة مقارنة العدد الصحيح: اعتبار 0.25 أكبر من 0.8"),
+            ("0.25 اكبر", "مغالطة مقارنة العدد الصحيح: اعتبار 0.25 أكبر من 0.8"),
+            ("25 أكبر من 8", "تجاهل القيمة المكانية ومقارنة الأعداد كأعداد صحيحة"),
+            ("25 اكبر من 8", "تجاهل القيمة المكانية ومقارنة الأعداد كأعداد صحيحة"),
+            ("0.8 < 0.25", "عكس علامة المقارنة: 0.8 أصغر من 0.25")
+        ],
+        "c_unlike_fractions": [
+            ("2/5", "مغالطة جمع المقامات: جمع 1+1 و 2+3"),
+            ("2 / 5", "مغالطة جمع المقامات: جمع 1+1 و 2+3"),
+            ("1+1=2", "جمع البسط والمقام مباشرة دون توحيد المقامات")
+        ],
+        "c_decimal_mult_div": [
+            ("0.0475", "تحريك العلامة لليسار في عملية الضرب بدلاً من اليمين"),
+            ("47.5", "الضرب في 10 بدلاً من 100")
+        ],
+        "c_gcf_lcm": [
+            ("ع.م.أ = 24", "الخلط بين العامل والمضاعف"),
+            ("ع م أ = 24", "الخلط بين العامل والمضاعف"),
+            ("م.م.أ = 2", "الخلط بين العامل والمضاعف"),
+            ("م م أ = 2", "الخلط بين العامل والمضاعف")
+        ]
+    }
+
+    # 1. Option key or text selection
+    opt_picked = None
+    for idx, opt in enumerate(options, 1):
+        opt_key = opt.get("key", "").lower()
+        opt_text = opt.get("text", "").lower()
+        if msg_lower in (opt_key, f"option {opt_key}", f"({opt_key})", str(idx), f"option {idx}"):
+            opt_picked = opt
+            break
+        if opt_text in msg_lower or (len(msg_lower) > 5 and msg_lower == opt_text[:len(msg_lower)]):
+            opt_picked = opt
             break
 
-    corr_ans = sample_q.get("correct_answer", "").lower()
-    corr_keywords = [w for w in re.findall(r"[\w\u0600-\u06FF]+", corr_ans) if len(w) >= 3]
-    has_correct_keywords = any(kw in msg_lower for kw in corr_keywords)
+    if opt_picked:
+        is_correct = opt_picked.get("is_correct", False)
+        if not is_correct:
+            matched_misconception = opt_picked.get("misconception")
+    else:
+        # Check distinctive misconceptions first
+        concept_errors = DISTINCT_MISCONCEPTIONS.get(req.concept_id, [])
+        for err_kw, err_desc in concept_errors:
+            if err_kw in msg_lower:
+                matched_misconception = err_desc
+                is_correct = False
+                break
 
-    is_correct = has_correct_keywords and (not matched_misconception)
+        if not matched_misconception:
+            # 2. Check accepted variants
+            for variant in accepted_variants:
+                if variant in msg_lower or variant in clean_msg:
+                    is_correct = True
+                    break
+
+            # 3. Concept-specific semantic evaluation
+            if not is_correct:
+                if req.concept_id == "c_past_simple":
+                    if any(v in msg_lower for v in ["visited", "went", "traveled", "travelled", "travled"]):
+                        is_correct = True
+                elif req.concept_id == "c_nouns_quantifiers":
+                    if ("any" in msg_lower or "some" in msg_lower):
+                        is_correct = True
+                elif req.concept_id == "c_comparatives_superlatives":
+                    if ("fastest" in msg_lower or "faster" in msg_lower):
+                        is_correct = True
+                elif req.concept_id == "c_egypt_ecosystems":
+                    if any(w in msg_lower for w in ["erosion", "shelter", "protect", "coast", "mangrove", "تآكل", "حماية"]):
+                        is_correct = True
+                elif req.concept_id == "c_decimals_place_value":
+                    if (">" in msg_lower or "أكبر" in msg_lower or "0.80" in msg_lower or "0.8" in msg_lower):
+                        is_correct = True
+                elif req.concept_id == "c_unlike_fractions":
+                    if ("5/6" in msg_lower or "5 / 6" in msg_lower or "خمسة" in msg_lower):
+                        is_correct = True
+                elif req.concept_id == "c_decimal_mult_div":
+                    if "475" in msg_lower:
+                        is_correct = True
+                elif req.concept_id == "c_gcf_lcm":
+                    if ("2" in msg_lower and "24" in msg_lower):
+                        is_correct = True
+
+    # Determine personalized pedagogical feedback
+    if is_correct:
+        custom_feedback = sample_q.get("pedagogical_success_reply")
+    else:
+        custom_feedback = sample_q.get("pedagogical_remediation_reply")
 
     
     # Agent 2: Misconception Detection
@@ -233,7 +338,7 @@ async def chat_with_tutor(req: ChatMessageRequest):
             }
         ],
         "addressed_concepts": [req.concept_id],
-        "next_steps": ["Advanced Memory Allocation", "Data Structure Pointers"]
+        "next_steps": ["Advanced Fractions", "Decimals Operations"]
     }
 
     if AI1_AVAILABLE:
@@ -269,8 +374,10 @@ async def chat_with_tutor(req: ChatMessageRequest):
         is_correct=is_correct,
         p_known=updated_state.p_known,
         course_evidence=course_evidence,
-        misconception=misc_signal
+        misconception=misc_signal,
+        custom_pedagogical_feedback=custom_feedback
     )
+
 
     return {
         "tutor_reply": action_plan.response_content,

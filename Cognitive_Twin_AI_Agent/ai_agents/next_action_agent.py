@@ -78,6 +78,7 @@ class NextBestActionAgent:
 
     @classmethod
     def prescribe(
+
         cls,
         learner_id: str,
         concept_name: str,
@@ -87,7 +88,8 @@ class NextBestActionAgent:
         is_correct: bool,
         p_known: float,
         course_evidence: str,
-        misconception: Optional[MisconceptionSignal] = None
+        misconception: Optional[MisconceptionSignal] = None,
+        custom_pedagogical_feedback: Optional[str] = None
     ) -> ActionPlan:
         """Determines the action and drafts the grounded message."""
         action, reasoning = cls.evaluate_rules(
@@ -97,9 +99,9 @@ class NextBestActionAgent:
         dossier = None
         if action == ActionType.ESCALATION:
             content = (
-                f"You've shown great dedication on **{concept_name}**! "
-                "We've flagged this topic for your course mentor so you can have a quick 1-on-1 walkthrough. "
-                "Feel free to take a short breather while we arrange that!"
+                f"أنت عملت مجهود رائع يا بطل في **{concept_name}**! 👏 "
+                "المفهوم ده محتاج تركيز وتوضيح أكتر، بلغنا معلم المادة عشان يشرحهولك خطوة بخطوة. "
+                "خد استراحة قصيرة واشرب عصير وهنرجع نكمل!"
             )
             dossier = HumanDossier(
                 learner_id=learner_id,
@@ -111,26 +113,36 @@ class NextBestActionAgent:
             rec = "Queue mentor session and freeze automated penalties."
 
         elif action == ActionType.REMEDIATION:
-            snippet = course_evidence[:130]
-            content = (
-                f"Let's untangle this concept! The course material states: '{snippet}...'. "
-                f"Your recent answers suggest a misunderstanding where: {misconception.misunderstanding_description if misconception else ''}. "
-                "Compare these two perspectives and give it another try!"
-            )
+            if custom_pedagogical_feedback:
+                content = custom_pedagogical_feedback
+            else:
+                snippet = course_evidence[:140]
+                misc_text = misconception.misunderstanding_description if misconception else ""
+                content = (
+                    f"خد بالك يا بطل! 💡 {misc_text}\n"
+                    f"قاعدة الدرس في كتاب المدرسة بتقول: '{snippet}...' "
+                    "فكر فيها تاني وجرب تحلها!"
+                )
             rec = "Present targeted question containing distractor trap next."
 
         elif action == ActionType.SOCRATIC_TUTORING:
-            content = (
-                f"You are right on the edge of the solution! Think about how '{concept_name}' handles memory: "
-                "Is a new copy created, or are you modifying the existing reference?"
-            )
+            if custom_pedagogical_feedback:
+                content = custom_pedagogical_feedback
+            else:
+                content = (
+                    f"أنت قريب جداً من الحل الصح يا بطل! 🎯 "
+                    f"فكر كده في **{concept_name}** وحاول تطبق القاعدة خطوة بخطوة."
+                )
             rec = "Await student response to Socratic cue."
 
         else:
-            content = (
-                f"Excellent work on **{concept_name}**! Your reasoning was accurate. "
-                "Let's keep this momentum rolling into the next challenge!"
-            )
+            if custom_pedagogical_feedback:
+                content = custom_pedagogical_feedback
+            else:
+                content = (
+                    f"ممتاز يا بطل! 🌟 إجابتك صحيحة ودقيقة في **{concept_name}**! "
+                    "مستواك رائع ويلا بينا للتحدي اللي بعده!"
+                )
             rec = "Schedule next review according to Ebbinghaus memory stability."
 
         return ActionPlan(
@@ -140,6 +152,7 @@ class NextBestActionAgent:
             follow_up_recommendation=rec,
             human_dossier=dossier
         )
+
 
     @staticmethod
     def get_claude_tutor_prompt(action: ActionType, concept: str, question: str, answer: str, evidence: str) -> Dict[str, str]:

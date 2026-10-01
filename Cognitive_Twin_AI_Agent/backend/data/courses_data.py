@@ -1,9 +1,9 @@
 """
 SALI — Primary 5 Courses Data (Egyptian Curriculum)
-Provides 2 accredited Primary 5 (الصف الخامس الابتدائي) courses:
-1. English (Connect 5) — Grammar, Quantifiers, Adjectives, Ecosystems
-2. Mathematics (الرياضيات) — Decimals, Unlike Fractions, Operations, GCF/LCM
-Includes calibrated misconceptions, sample questions, and pedagogical evidence.
+Richly structured for Primary 5 (الصف الخامس الابتدائي):
+- Connect 5 (English)
+- Mathematics (الرياضيات)
+Includes question options (MCQ), accepted variants, and friendly pedagogical feedback.
 """
 
 STUDENT_PROFILE = {
@@ -11,7 +11,8 @@ STUDENT_PROFILE = {
     "name": "كريم عز الدين (Kareem)",
     "email": "kareem.grade5@sali-learning.eg",
     "degree": "Primary 5 (Grade 5) — الصف الخامس الابتدائي",
-    "semester": "Term 1, Academic Year 2026/2027",
+    "grade_name": "الصف الخامس الابتدائي",
+    "semester": "الفصل الدراسي الأول 2026/2027",
     "overall_cognitive_index": 0.68,
     "current_streak_days": 6,
     "memory_stability_days": 3.8
@@ -20,68 +21,97 @@ STUDENT_PROFILE = {
 COURSES_DATA = [
     {
         "course_id": "ENG-501",
-        "course_title": "English — Connect 5 (Primary 5)",
+        "course_title": "English — Connect 5",
         "code": "ENG-501",
-        "description": "Ministry of Education Connect 5 curriculum: Past Simple, Quantifiers, Adjectives, and Egyptian Ecosystems.",
+        "lang": "en",
+        "description": "منهج اللغة الإنجليزية Connect 5 للصف الخامس الابتدائي (Grammar, Vocabulary & Ecosystems).",
         "instructor": "Teacher / مستر أحمد فاروق",
         "concepts": [
             {
                 "concept_id": "c_past_simple",
                 "concept_name": "Past Simple & Irregular Verbs",
+                "arabic_title": "الماضي البسيط والأفعال غير المنتظمة",
                 "mastery": 0.40,
                 "stability": 2.2,
                 "last_practiced": "2026-09-28",
                 "course_evidence": (
-                    "In Connect 5 Unit 1, we use the Past Simple tense to talk about actions finished in the past. "
-                    "Regular verbs add -ed (visited, played, cooked). Irregular verbs change completely and NEVER take -ed "
-                    "(go -> went, see -> saw, buy -> bought, have -> had). "
-                    "In negative sentences, we use 'didn't' followed by the infinitive base verb (e.g., 'He didn't go', NOT 'didn't went')."
+                    "In Connect 5 Unit 1, regular past verbs take -ed (visited, played, traveled). "
+                    "Irregular verbs change their form completely (go -> went, see -> saw, buy -> bought). "
+                    "Negative sentences use 'didn't + infinitive' (He didn't go)."
                 ),
                 "sample_question": {
                     "question_id": "q_eng_01",
+                    "question_type": "mcq_or_fill",
+                    "lang": "en",
                     "question_text": "Yesterday, my family and I ______ to Alexandria and we ______ the Qaitbay Citadel.",
-                    "correct_answer": "went / visited (because 'go' is irregular and changes to 'went', while 'visit' is regular and takes '-ed')",
+                    "hint": "Choose the past form: (go/travel) and (visit).",
+                    "options": [
+                        {"key": "A", "text": "went / visited", "is_correct": True},
+                        {"key": "B", "text": "traveled / visited", "is_correct": True},
+                        {"key": "C", "text": "goed / visited", "is_correct": False, "misconception": "Over-regularization: adding -ed to irregular 'go'"},
+                        {"key": "D", "text": "go / visit", "is_correct": False, "misconception": "Using present base tense instead of past simple"}
+                    ],
+                    "accepted_text_answers": [
+                        "went / visited", "went and visited", "went visited", "went, visited",
+                        "traveled / visited", "traveled and visited", "traveled visited", "travelled / visited",
+                        "travled / visited", "travled 2- visited", "1- travled 2- visited", "1- traveled 2- visited",
+                        "1- went 2- visited", "went", "visited", "traveled", "A", "B"
+                    ],
+                    "pedagogical_success_reply": "أحسنت يا بطل! 🌟 إجابتك صحيحة وممتازة! استخدمت صيغة الماضي البسيط (went / traveled / visited) بشكل سليم جداً.",
+                    "pedagogical_remediation_reply": "خد بالك يا بطل! 💡 في الماضي البسيط: الفعل go غير منتظم وماضيه went (مش بنحط له ed)، بينما visit و travel أفعال منتظمة بنضيف لها ed.",
                     "misconception_presets": [
                         {
-                            "title": "Over-regularization Fallacy ('goed')",
-                            "answer": "goed / visited because all past verbs must end with -ed",
-                            "expected_misconception": "Applying regular -ed rule to irregular verbs like 'go'"
+                            "title": "Over-regularization ('goed')",
+                            "answer": "goed / visited",
+                            "expected_misconception": "Adding -ed to irregular verb 'go' instead of using 'went'"
                         },
                         {
-                            "title": "Double Past Tense Fallacy ('didn't went')",
-                            "answer": "We didn't went because both words must be in the past tense",
-                            "expected_misconception": "Using past form after auxiliary 'didn't' instead of base infinitive"
+                            "title": "Double Past ('didn't went')",
+                            "answer": "didn't went to Alexandria",
+                            "expected_misconception": "Using past verb form after 'didn't' instead of base verb"
                         }
                     ]
                 }
             },
             {
                 "concept_id": "c_nouns_quantifiers",
-                "concept_name": "Countable / Uncountable & Some / Any",
+                "concept_name": "Countable & Uncountable (Some / Any)",
+                "arabic_title": "الأسماء المعدودة وغير المعدودة مع Some و Any",
                 "mastery": 0.55,
                 "stability": 3.4,
                 "last_practiced": "2026-09-29",
                 "course_evidence": (
-                    "In Connect 5 Unit 2 (At the Market), countable nouns have a singular and plural form (an apple, three apples). "
-                    "Uncountable nouns cannot be counted and have NO plural form (water, milk, rice, money). "
-                    "We use 'many' with countable nouns and 'much' with uncountable nouns. "
-                    "We use 'some' in affirmative sentences ('I have some rice') and polite offers ('Would you like some tea?'), "
-                    "and 'any' in negative sentences ('We don't have any milk') and questions."
+                    "Countable nouns can be counted and have plural forms (apples). Uncountable nouns have no plural (water, milk). "
+                    "Use 'many' with countable and 'much' with uncountable. "
+                    "Use 'some' in positive sentences and offers, and 'any' in negative sentences and questions."
                 ),
                 "sample_question": {
                     "question_id": "q_eng_02",
-                    "question_text": "Choose the correct words: We don't have ______ milk in the fridge, but there are ______ fresh apples.",
-                    "correct_answer": "any / some (use 'any' in negative sentences and 'some' in positive sentences with plural nouns)",
+                    "question_type": "mcq",
+                    "lang": "en",
+                    "question_text": "We don't have ______ milk in the fridge, but we have ______ fresh apples.",
+                    "hint": "Choose the correct pair of quantifiers:",
+                    "options": [
+                        {"key": "A", "text": "any / some", "is_correct": True},
+                        {"key": "B", "text": "some / any", "is_correct": False, "misconception": "Using 'some' in negative statements"},
+                        {"key": "C", "text": "many / much", "is_correct": False, "misconception": "Confusing many with uncountable milk"},
+                        {"key": "D", "text": "a / any", "is_correct": False, "misconception": "Using 'a' with uncountable milk"}
+                    ],
+                    "accepted_text_answers": [
+                        "any / some", "any some", "any, some", "any and some", "A"
+                    ],
+                    "pedagogical_success_reply": "رائع جداً! 👏 اخترت 'any' عشان الجملة منفية مع الحليب، و 'some' في الجملة المثبتة مع التفاح.",
+                    "pedagogical_remediation_reply": "ركز يا بطل! 💡 في الجمل المنفية (don't have) بنستخدم 'any'، أما في الجمل المثبتة بنستخدم 'some'.",
                     "misconception_presets": [
                         {
-                            "title": "Pluralizing Uncountable Fallacy ('many waters')",
-                            "answer": "There are many waters and milks in the fridge",
-                            "expected_misconception": "Treating liquids and uncountable nouns as countable plurals with 'many'"
+                            "title": "Negative 'Some' Fallacy",
+                            "answer": "We don't have some milk",
+                            "expected_misconception": "Using 'some' in negative sentences instead of 'any'"
                         },
                         {
-                            "title": "Negative 'Some' Fallacy",
-                            "answer": "We don't have some milk because some means a small quantity",
-                            "expected_misconception": "Using 'some' in negative clauses instead of 'any'"
+                            "title": "Pluralizing Uncountable ('waters')",
+                            "answer": "many waters and milks",
+                            "expected_misconception": "Pluralizing uncountable liquids with many"
                         }
                     ]
                 }
@@ -89,48 +119,73 @@ COURSES_DATA = [
             {
                 "concept_id": "c_comparatives_superlatives",
                 "concept_name": "Comparatives & Superlatives",
+                "arabic_title": "مقارنة وتفضيل الصفات",
                 "mastery": 0.48,
                 "stability": 2.8,
                 "last_practiced": "2026-09-27",
                 "course_evidence": (
-                    "In Connect 5 Unit 3, for short adjectives (one syllable), we add -er + than for comparison (fast -> faster than, big -> bigger than) "
-                    "and the + -est for superlatives (the fastest, the biggest). For long adjectives with two or more syllables, "
-                    "we use 'more / less + adjective + than' (more dangerous than) and 'the most / least' (the most dangerous). "
-                    "We NEVER combine 'more' with '-er' (e.g. 'more faster' is strictly incorrect)."
+                    "Short adjectives add -er than (faster than) and the + -est (the fastest). "
+                    "Long adjectives use more/less + adjective + than, and the most/least. "
+                    "Never say 'more faster'."
                 ),
                 "sample_question": {
                     "question_id": "q_eng_03",
-                    "question_text": "The cheetah is ______ (fast) land animal, and it is ______ (fast) than a lion.",
-                    "correct_answer": "the fastest / faster than",
+                    "question_type": "mcq",
+                    "lang": "en",
+                    "question_text": "The cheetah is ______ animal on land, and it is ______ than a lion.",
+                    "hint": "Fill in with the correct comparison forms of 'fast':",
+                    "options": [
+                        {"key": "A", "text": "the fastest / faster", "is_correct": True},
+                        {"key": "B", "text": "the most fast / more fast", "is_correct": False, "misconception": "Using more/most with short adjectives"},
+                        {"key": "C", "text": "the most fastest / more faster", "is_correct": False, "misconception": "Double comparative stacking"},
+                        {"key": "D", "text": "faster / the fastest", "is_correct": False, "misconception": "Swapping comparative and superlative order"}
+                    ],
+                    "accepted_text_answers": [
+                        "the fastest / faster", "fastest / faster", "the fastest and faster", "A"
+                    ],
+                    "pedagogical_success_reply": "برافو عليك! 🐆 إجابة نموذجية: the fastest للتفضيل و faster than للمقارنة بين حيوانين.",
+                    "pedagogical_remediation_reply": "خد بالك يا بطل! 💡 كلمة fast صفة قصيرة، في المقارنة بنحط لها er (faster than)، وفي التفضيل بنحط the + est (the fastest)، ومش بنستخدم معاها more أبداً.",
                     "misconception_presets": [
                         {
-                            "title": "Double Comparative Fallacy ('more faster')",
-                            "answer": "The cheetah is the most fastest and it is more faster than a lion",
-                            "expected_misconception": "Stacking 'more' or 'most' on top of short adjective suffixes -er/-est"
+                            "title": "Double Comparative ('more faster')",
+                            "answer": "more faster than a lion",
+                            "expected_misconception": "Combining 'more' with '-er' suffix on short adjectives"
                         }
                     ]
                 }
             },
             {
                 "concept_id": "c_egypt_ecosystems",
-                "concept_name": "Ecosystems & Egyptian Wildlife",
+                "concept_name": "Ecosystems & Wildlife in Egypt",
+                "arabic_title": "الأنظمة البيئية والحياة البرية في مصر",
                 "mastery": 0.62,
                 "stability": 4.5,
                 "last_practiced": "2026-09-30",
                 "course_evidence": (
-                    "An ecosystem is a community where living things (plants, animals) interact with non-living elements (water, soil, sunlight). "
-                    "In Egypt, coastal mangrove trees along the Red Sea protect shorelines from storms and erosion while providing a safe habitat "
-                    "for young fish and crabs. The Nile River ecosystem supports rich soil and wetland biodiversity."
+                    "An ecosystem consists of living organisms (plants, animals) interacting with non-living elements (water, soil). "
+                    "Red Sea mangrove trees protect shorelines from erosion and provide nurseries for marine life."
                 ),
                 "sample_question": {
                     "question_id": "q_eng_04",
-                    "question_text": "Why are mangrove trees in Egypt vital for the Red Sea marine ecosystem?",
-                    "correct_answer": "They prevent coastal erosion and provide a protected nursery shelter for baby marine organisms",
+                    "question_type": "mcq",
+                    "lang": "en",
+                    "question_text": "Why are mangrove trees along the Red Sea coast important?",
+                    "hint": "Select the primary ecological benefit:",
+                    "options": [
+                        {"key": "A", "text": "They protect shores from erosion & shelter baby fish", "is_correct": True},
+                        {"key": "B", "text": "They grow on dry desert mountains without water", "is_correct": False, "misconception": "Believing mangroves grow in dry deserts"},
+                        {"key": "C", "text": "They are only used to make wooden furniture", "is_correct": False, "misconception": "Ignoring ecological nursery role"}
+                    ],
+                    "accepted_text_answers": [
+                        "protect shores from erosion & shelter baby fish", "protect shores", "shelter baby fish", "A"
+                    ],
+                    "pedagogical_success_reply": "ممتاز جداً! 🌿 أشجار المانجروف بتحمي شواطئ البحر الأحمر وتعتبر بيتاً آمناً لصغار الأسماك والكائنات البحرية.",
+                    "pedagogical_remediation_reply": "معلومة مهمة يا بطل: 🌊 أشجار المانجروف بتعيش في المياه المالحة على سواحل البحر الأحمر وجذورها بتمنع تآكل الشواطئ وتحمي الأسماك الصغيرة.",
                     "misconception_presets": [
                         {
                             "title": "Abiotic Exclusion Fallacy",
-                            "answer": "Ecosystems only mean wild animals living together, water and rocks do not matter",
-                            "expected_misconception": "Excluding abiotic factors (soil, water, climate) from the ecosystem concept"
+                            "answer": "Ecosystems only mean animals, plants and water are not important",
+                            "expected_misconception": "Excluding non-living elements (water, soil) from ecosystem definitions"
                         }
                     ]
                 }
@@ -139,36 +194,45 @@ COURSES_DATA = [
     },
     {
         "course_id": "MATH-501",
-        "course_title": "الرياضيات — الصف الخامس الابتدائي",
+        "course_title": "الرياضيات — الصف الخامس",
         "code": "MATH-501",
-        "description": "منهج وزارة التربية والتعليم الجديد: الكسور العشرية، جمع وطرح الكسور الاعتيادية، والعمليات الحسابية وع.م.أ وم.م.أ.",
+        "lang": "ar",
+        "description": "منهج الرياضيات الحديث: الكسور العشرية، العمليات الحسابية، جمع وطرح الكسور، ع.م.أ وم.م.أ.",
         "instructor": "أستاذ / محمد الشناوي (معلم خبير رياضيات)",
         "concepts": [
             {
                 "concept_id": "c_decimals_place_value",
-                "concept_name": "الكسور العشرية والقيمة المكانية حتى الجزء من ألف",
+                "concept_name": "الكسور العشرية والقيمة المكانية",
+                "arabic_title": "مقارنة الكسور العشرية والقيمة المكانية حتى الجزء من ألف",
                 "mastery": 0.35,
                 "stability": 2.0,
                 "last_practiced": "2026-09-29",
                 "course_evidence": (
-                    "يتكون الكسر العشري من عدد صحيح وعلامة عشرية وأجزاء: جزء من عشرة (Tenths)، جزء من مائة (Hundredths)، وجزء من ألف (Thousandths). "
-                    "لمقارنة كسرين عشريين، نقارن أولاً العدد الصحيح، ثم الأجزاء من اليسار إلى اليمين بعد موازنة عدد الخانات بوضع أصفار على اليمين. "
-                    "مثال: 0.8 = 0.800 وهي أكبر من 0.250 لأن 8 أجزاء من عشرة أكبر من جزءين من عشرة."
+                    "لمقارنة كسرين عشريين، نوازن أولاً عدد الخانات بوضع أصفار على اليمين. "
+                    "مثال: 0.8 تكافئ 0.80 وهي أكبر من 0.25. لا يجوز مقارنة الأجزاء العشرية كأعداد صحيحة عادية."
                 ),
                 "sample_question": {
                     "question_id": "q_math_01",
-                    "question_text": "قارن بين العددين العشريين: 0.8 و 0.25 مستخدماً العلامة المناسبة (> أو < أو =).",
-                    "correct_answer": "0.8 > 0.25 لأن 0.8 تكافئ 0.80 جزءاً من مائة وهي أكبر من 0.25",
+                    "question_type": "mcq",
+                    "lang": "ar",
+                    "question_text": "قارن بين الكسرين العشريين: 0.8 و 0.25 مستخدماً العلامة المناسبة:",
+                    "hint": "تذكر موازنة الخانات العشرية أولاً (0.8 = 0.80):",
+                    "options": [
+                        {"key": "A", "text": "0.8 > 0.25 (لأن 0.80 أكبر من 0.25)", "is_correct": True},
+                        {"key": "B", "text": "0.8 < 0.25 (لأن 25 أكبر من 8)", "is_correct": False, "misconception": "مغالطة مقارنة العدد الصحيح: تجاهل القيمة المكانية"},
+                        {"key": "C", "text": "0.8 = 0.25", "is_correct": False, "misconception": "اعتبار القيمتين متساويتين"}
+                    ],
+                    "accepted_text_answers": [
+                        ">", "0.8 > 0.25", "0.8 اكبر من 0.25", "0.8 أكبر من 0.25", "0.8 أكبر", "أكبر", "اكبر",
+                        "0.8 > 0.25 (لأن 0.80 أكبر من 0.25)", "A"
+                    ],
+                    "pedagogical_success_reply": "عبقري يا بطل! 🌟 0.8 فعلاً أكبر من 0.25 لأننا لما نساوي الخانات بتبقى 0.80 جزءاً من مائة وهي أكبر بكثير من 0.25.",
+                    "pedagogical_remediation_reply": "خد بالك يا شاطر! 💡 في الكسور العشرية بنقارن الخانات من الشمال لليمين. 0.8 فيها 8 أجزاء من عشرة، بينما 0.25 فيها 2 جزء من عشرة فقط، عشان كده 0.8 > 0.25.",
                     "misconception_presets": [
                         {
-                            "title": "مغالطة مقارنة العدد الصحيح (Whole-Number Fallacy)",
-                            "answer": "0.25 أكبر من 0.8 لأن العدد 25 أكبر من العدد 8",
-                            "expected_misconception": "تجاهل القيمة المكانية ومعاملة الأجزاء العشرية كأعداد صحيحة عادية"
-                        },
-                        {
-                            "title": "مغالطة عدد الخانات",
-                            "answer": "0.25 أكبر لأنها مكونة من رقمين بينما 0.8 مكونة من رقم واحد فقط",
-                            "expected_misconception": "الاعتقاد بأن الكسر العشري ذو الأرقام الأكثر يكون هو الأكبر دائماً"
+                            "title": "مغالطة مقارنة العدد الصحيح",
+                            "answer": "0.25 أكبر من 0.8 لأن 25 أكبر من 8",
+                            "expected_misconception": "تجاهل القيمة المكانية ومعاملة الأجزاء العشرية كأعداد صحيحة"
                         }
                     ]
                 }
@@ -176,47 +240,73 @@ COURSES_DATA = [
             {
                 "concept_id": "c_unlike_fractions",
                 "concept_name": "جمع وطرح الكسور غير متحدة المقام",
+                "arabic_title": "جمع وطرح الكسور بتوحيد المقامات",
                 "mastery": 0.42,
                 "stability": 2.6,
                 "last_practiced": "2026-09-28",
                 "course_evidence": (
-                    "لجمع أو طرح كسرين اعتياديين بمقامات مختلفة، يجب أولاً إيجاد المضاعف المشترك الأصغر للمقامين (م.م.أ) لتوحيد المقامات، "
-                    "ثم نجمع أو نطرح البسطين مع بقاء المقام الموحد ثابتاً كما هو دون تغيير. لا يجوز إطلاقاً جمع أو طرح المقامات. "
-                    "مثال: 1/2 + 1/3 = 3/6 + 2/6 = 5/6."
+                    "لجمع كسرين بمقامات مختلفة (1/2 + 1/3)، نوحد المقامات أولاً بإيجاد م.م.أ للمقامين (6)، "
+                    "فيصبح 3/6 + 2/6 = 5/6. لا يجوز جمع المقامات إطلاقاً."
                 ),
                 "sample_question": {
                     "question_id": "q_math_02",
-                    "question_text": "احسب ناتج: 1/2 + 1/3 في أبسط صورة.",
-                    "correct_answer": "5/6 بعد توحيد المقامات على 6 (3/6 + 2/6 = 5/6)",
+                    "question_type": "mcq",
+                    "lang": "ar",
+                    "question_text": "احسب ناتج: 1/2 + 1/3 في أبسط صورة:",
+                    "hint": "أوجد م.م.أ للعددين 2 و 3 ووحد المقامات:",
+                    "options": [
+                        {"key": "A", "text": "5/6 (بعد توحيد المقامات على 6)", "is_correct": True},
+                        {"key": "B", "text": "2/5 (بجمع 1+1 على 2+3)", "is_correct": False, "misconception": "مغالطة جمع المقامات مباشرة"},
+                        {"key": "C", "text": "2/6", "is_correct": False, "misconception": "خطأ في ضرب البسط"},
+                        {"key": "D", "text": "1/6", "is_correct": False, "misconception": "إجراء عملية طرح بدلاً من الجمع"}
+                    ],
+                    "accepted_text_answers": [
+                        "5/6", "خمسة أسداس", "خمسة على ستة", "5 / 6", "A"
+                    ],
+                    "pedagogical_success_reply": "برافو عليك يا فنان! 👏 وحدت المقامات على 6: النصف = 3/6 والثلث = 2/6، ومجموعهم 5/6، ممتاز إنك لم تجمع المقامات!",
+                    "pedagogical_remediation_reply": "تنبيه مهم جداً يا بطل! ⚠️ في الكسور مش بنجمع المقامات أبداً! لازم أولاً نوحد المقامات: م.م.أ للـ 2 والـ 3 هو 6. (3/6 + 2/6 = 5/6).",
                     "misconception_presets": [
                         {
-                            "title": "مغالطة جمع المقامات (Across-Addition Fallacy)",
-                            "answer": "الناتج 2/5 بجمع البسط 1+1=2 وجمع المقام 2+3=5",
-                            "expected_misconception": "جمع البسط مع البسط والمقام مع المقام مباشرة دون توحيد المقامات"
+                            "title": "مغالطة جمع المقامات (1/2 + 1/3 = 2/5)",
+                            "answer": "الناتج 2/5 بجمع البسط 1+1 والمقام 2+3",
+                            "expected_misconception": "جمع البسط مع البسط والمقام مع المقام مباشرة"
                         }
                     ]
                 }
             },
             {
                 "concept_id": "c_decimal_mult_div",
-                "concept_name": "ضرب وقسمة الأعداد العشرية في قوى العدد 10",
+                "concept_name": "ضرب وقسمة الكسور العشرية في 10 و 100",
+                "arabic_title": "حركة العلامة العشرية في الضرب والقسمة",
                 "mastery": 0.50,
                 "stability": 3.1,
                 "last_practiced": "2026-09-30",
                 "course_evidence": (
-                    "عند ضرب كسر عشري في 10 أو 100 أو 1000، تتحرك العلامة العشرية جهة اليمين بعدد أصفار المضاعف (3.45 × 10 = 34.5). "
-                    "وعند القسمة على 10 أو 100 أو 1000، تتحرك العلامة العشرية جهة اليسار (25.8 ÷ 10 = 2.58). "
-                    "الضرب في 0.1 يعادل تماماً القسمة على 10."
+                    "عند الضرب في 10 أو 100 تتحرك العلامة جهة اليمين بعدد الأصفار (4.75 × 100 = 475). "
+                    "عند القسمة على 10 تتحرك العلامة جهة اليسار (25.8 ÷ 10 = 2.58)."
                 ),
                 "sample_question": {
                     "question_id": "q_math_03",
-                    "question_text": "ما هو ناتج: 4.75 × 100 ؟",
-                    "correct_answer": "475 (تتحرك العلامة العشرية خانتين إلى اليمين)",
+                    "question_type": "mcq",
+                    "lang": "ar",
+                    "question_text": "ما هو ناتج ضرب: 4.75 × 100 ؟",
+                    "hint": "تتحرك العلامة العشرية جهة اليمين خانتين بعدد أصفار الـ 100:",
+                    "options": [
+                        {"key": "A", "text": "475 (تحريك العلامة خانتين لليمين)", "is_correct": True},
+                        {"key": "B", "text": "0.0475 (تحريك العلامة لليسار)", "is_correct": False, "misconception": "عكس اتجاه العلامة: تحريكها لليسار في الضرب"},
+                        {"key": "C", "text": "47.5 (تحريك خانة واحدة فقط)", "is_correct": False, "misconception": "الضرب في 10 بدلاً من 100"},
+                        {"key": "D", "text": "4750", "is_correct": False, "misconception": "زيادة خانة إضافية"}
+                    ],
+                    "accepted_text_answers": [
+                        "475", "475.0", "أربعمائة وخمسة وسبعون", "A"
+                    ],
+                    "pedagogical_success_reply": "تسلم إيدك يا بطل! 🎯 عند الضرب في 100 حركت العلامة خانتين لليمين وأصبح الناتج 475، حل سليم 100%.",
+                    "pedagogical_remediation_reply": "افتكر القاعدة السحرية يا شاطر: 🌟 في الضرب بنحرك العلامة ناحية اليمين (عشان الرقم يكبر)، وفي القسمة بنحركها ناحية الشمال. 4.75 × 100 = 475.",
                     "misconception_presets": [
                         {
-                            "title": "مغالطة اتجاه حركة العلامة العشرية",
-                            "answer": "0.0475 بتحريك العلامة جهة اليسار لأن الضرب يصغر الرقم",
-                            "expected_misconception": "الخلط بين اتجاه حركة العلامة في الضرب (يميناً) والقسمة (يساراً)"
+                            "title": "مغالطة اتجاه حركة العلامة",
+                            "answer": "0.0475 بتحريك العلامة لليسار",
+                            "expected_misconception": "تحريك العلامة جهة اليسار في الضرب بدلاً من اليمين"
                         }
                     ]
                 }
@@ -224,28 +314,36 @@ COURSES_DATA = [
             {
                 "concept_id": "c_gcf_lcm",
                 "concept_name": "العوامل والمضاعفات (ع.م.أ و م.م.أ)",
+                "arabic_title": "العامل المشترك الأكبر والمضاعف المشترك الأصغر",
                 "mastery": 0.38,
                 "stability": 2.3,
                 "last_practiced": "2026-09-27",
                 "course_evidence": (
-                    "العامل المشترك الأكبر (ع.م.أ) هو أكبر عدد يقسم كلا العددين معاً، ونستخرجه بضرب العوامل الأولية المشتركة فقط. "
-                    "المضاعف المشترك الأصغر (م.م.أ) هو أصغر عدد يقبل القسمة على كلا العددين، ونستخرجه بضرب جميع العوامل الأولية المشتركة وغير المشتركة. "
-                    "للعددين 6 (2×3) و 8 (2×2×2): ع.م.أ = 2، بينما م.م.أ = 2×3×2×2 = 24."
+                    "للعددين 6 (2×3) و 8 (2×2×2): "
+                    "العامل المشترك الأكبر (ع.م.أ) = 2 (العوامل المشتركة فقط). "
+                    "المضاعف المشترك الأصغر (م.م.أ) = 2×3×2×2 = 24."
                 ),
                 "sample_question": {
                     "question_id": "q_math_04",
-                    "question_text": "أوجد العامل المشترك الأكبر (ع.م.أ) والمضاعف المشترك الأصغر (م.م.أ) للعددين 6 و 8.",
-                    "correct_answer": "ع.م.أ = 2 ، و م.م.أ = 24",
+                    "question_type": "mcq",
+                    "lang": "ar",
+                    "question_text": "أوجد العامل المشترك الأكبر (ع.م.أ) والمضاعف المشترك الأصغر (م.م.أ) للعددين 6 و 8:",
+                    "hint": "حلل العددين لعواملهما الأولية: 6 = 2×3 و 8 = 2×2×2:",
+                    "options": [
+                        {"key": "A", "text": "ع.م.أ = 2  و  م.م.أ = 24", "is_correct": True},
+                        {"key": "B", "text": "ع.م.أ = 24  و  م.م.أ = 2", "is_correct": False, "misconception": "الخلط بين مفهوم العامل والمضاعف"},
+                        {"key": "C", "text": "ع.م.أ = 1  و  م.م.أ = 48", "is_correct": False, "misconception": "ضرب العددين وتجاهل العوامل المشتركة"}
+                    ],
+                    "accepted_text_answers": [
+                        "ع.م.أ = 2 و م.م.أ = 24", "ع.م.أ = 2 و م.م.أ = 24", "2 و 24", "2 ، 24", "A"
+                    ],
+                    "pedagogical_success_reply": "ممتاز جداً يا باشمهندس صغير! 👏 ع.م.أ = 2 لأنه أكبر عدد يقسمهم معاً، وم.م.أ = 24 لأنه أصغر عدد يقبل القسمة عليهم.",
+                    "pedagogical_remediation_reply": "خلي بالك يا بطل: 💡 العامل (ع.م.أ) بيكون صغير (بيقسم العددين)، بينما المضاعف (م.م.أ) بيكون كبير (يقبل القسمة عليهم). للعددين 6 و 8: ع.م.أ = 2، وم.م.أ = 24.",
                     "misconception_presets": [
                         {
-                            "title": "مغالطة التبديل بين العامل والمضاعف",
+                            "title": "مغالطة عكس العامل والمضاعف",
                             "answer": "ع.م.أ = 24 و م.م.أ = 2",
-                            "expected_misconception": "عكس مفهوم العامل والمضاعف بسبب كلمة 'الأكبر' و 'الأصغر'"
-                        },
-                        {
-                            "title": "مغالطة الضرب المباشر للمضاعف",
-                            "answer": "م.م.أ هو حاصل ضرب 6 × 8 = 48 دائماً",
-                            "expected_misconception": "إهمال العوامل الأولية المشتركة وافتراض أن م.م.أ دائماً ضرب العددين"
+                            "expected_misconception": "عكس مفهوم العامل والمضاعف بسبب كلمة أكبر وأصغر"
                         }
                     ]
                 }

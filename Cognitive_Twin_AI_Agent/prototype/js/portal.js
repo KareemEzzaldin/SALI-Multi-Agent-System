@@ -138,8 +138,8 @@
 
   function updateTopbarTelemetry() {
     const pct = Math.round(currentConcept.mastery * 100);
-    el.topbarMastery.textContent = `${pct}%`;
-    el.topbarStability.textContent = `${currentConcept.stability}d`;
+    if (el.topbarMastery) el.topbarMastery.textContent = `${pct}%`;
+    if (el.topbarStability) el.topbarStability.textContent = `${currentConcept.stability}d`;
 
     const pctEl = document.getElementById(`pct-${currentConcept.concept_id}`);
     const barEl = document.getElementById(`bar-${currentConcept.concept_id}`);
@@ -157,7 +157,7 @@
     el.chatQuickChips.style.display = 'flex';
     el.chipsContainer.innerHTML = presets.map((p, idx) => `
       <button class="chip-test-btn" data-answer="${encodeURIComponent(p.answer)}">
-        ⚡ Test: "${p.title}"
+        ⚡ تجربة خطأ شائع: "${p.title}"
       </button>
     `).join('');
 
@@ -176,20 +176,77 @@
 
   function postInitialTutorGreeting() {
     const sampleQ = currentConcept.sample_question;
-    const qText = sampleQ ? sampleQ.question_text : `ما رأيك أن نتحدث عن مفهوم ${currentConcept.concept_name}؟`;
+    const isEnglish = currentCourse && currentCourse.course_id === 'ENG-501';
+    const qText = sampleQ ? sampleQ.question_text : `يلا بينا نتدرب على مفهوم ${currentConcept.concept_name}`;
+    const options = sampleQ?.options || [];
+
+    let optionsHtml = '';
+    if (options.length > 0) {
+      optionsHtml = `
+        <div class="mcq-options-grid">
+          ${options.map(opt => `
+            <button type="button" class="mcq-option-btn" data-choice="${opt.key}" data-text="${encodeURIComponent(opt.text)}">
+              <span class="mcq-key-pill">${opt.key}</span>
+              <span class="mcq-text-content ${isEnglish ? 'ltr-text' : 'rtl-text'}">${opt.text}</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    const greetingHeading = isEnglish
+      ? `أهلاً بك يا بطل! 👋 يلا نتدرب على <strong>${currentConcept.concept_name}</strong>`
+      : `أهلاً بك يا بطل! 👋 يلا نتدرب على درس <strong>${currentConcept.concept_name}</strong>`;
+
+    const instructionsText = options.length > 0
+      ? 'اضغط على الاختيار المناسب مباشرة أو اكتب إجابتك بالأسفل:'
+      : 'اكتب إجابتك أو طريقتك في الحل في المربع بالأسفل:';
 
     const initialContent = `
-      <p>أهلاً يا بطل! 👋 جاهز نتدرب على <strong>${currentConcept.concept_name}</strong>؟</p>
-      <p style="margin-top: 0.4rem;">إليك هذا السؤال لاختبار فهمك ومعايرة توأمك المعرفي:</p>
-      <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 0.8rem; margin: 0.6rem 0; border-left: 3px solid var(--accent-cyan); font-weight: 500;">
-        ${qText.replace(/\n/g, '<br>')}
+      <p style="font-weight: 600; font-size: 0.98rem; color: #f8fafc; margin-bottom: 0.35rem; direction: rtl; text-align: right;">
+        أهلاً بك يا بطل! 👋 يلا نتدرب على <span dir="auto" style="color: var(--accent-cyan); font-weight: 700;">${currentConcept.concept_name}</span>
+      </p>
+      <p style="color: #cbd5e1; font-size: 0.88rem; margin-bottom: 0.6rem; direction: rtl; text-align: right;">
+        ${instructionsText}
+      </p>
+      <div style="background: rgba(0,0,0,0.32); border-radius: 8px; padding: 0.95rem; margin: 0.5rem 0; border-left: 4px solid var(--accent-cyan);">
+        <div class="${isEnglish ? 'ltr-text' : 'rtl-text'}" style="font-size: 1.02rem; font-weight: 600; line-height: 1.5; color: #f1f5f9;">
+          ${qText.replace(/\n/g, '<br>')}
+        </div>
+        ${optionsHtml}
       </div>
-      <p style="font-size: 0.85rem; color: #94a3b8;">اكتب إجابتك أو فكرتك، أو اضغط على أحد شرائح الأخطاء الشائعة بالأعلى لتجربة رد الذكاء الاصطناعي!</p>
+      <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.4rem; direction: rtl; text-align: right;">
+        💡 ${options.length > 0 ? 'تقدر تضغط على الزر للإجابة فوراً، أو تكتبها بإيدك بالطريقة اللي تريحك!' : 'اكتب إجابتك وسيقوم المعلم الذكي بمراجعتها فوراً!'}
+      </p>
     `;
 
-    appendMessage('tutor', initialContent, 'practice-mode', null);
+    const msgRow = appendMessage('tutor', initialContent, 'practice-mode', null);
+    attachMcqClickHandlers(msgRow);
   }
 
+  function attachMcqClickHandlers(container) {
+    if (!container) return;
+    const btns = container.querySelectorAll('.mcq-option-btn');
+    btns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const choiceKey = btn.getAttribute('data-choice');
+        const choiceText = decodeURIComponent(btn.getAttribute('data-text') || '');
+        
+        // Show choice in input and send
+        el.chatInputText.value = `${choiceKey} - ${choiceText}`;
+        handleSendMessage();
+
+        // Visually mark selected and disable group
+        btns.forEach(b => {
+          b.disabled = true;
+          b.style.opacity = b === btn ? '1' : '0.45';
+          b.style.borderColor = b === btn ? 'var(--accent-indigo)' : 'transparent';
+          b.style.pointerEvents = 'none';
+        });
+      });
+    });
+  }
 
   async function handleSendMessage() {
     const text = el.chatInputText.value.trim();
@@ -248,12 +305,12 @@
     } catch (err) {
       typingRow.remove();
       console.error('Chat error:', err);
-      appendMessage('tutor', `<p style="color: #f43f5e;">⚠️ Error communicating with AI Agents. Please ensure the backend server is running on port 8000.</p>`, 'escalation-mode', null);
+      appendMessage('tutor', `<p style="color: #f43f5e;">⚠️ حدث خطأ في التواصل مع المعلم الذكي. يرجى التأكد من تشغيل السيرفر على منفذ 8000.</p>`, 'escalation-mode', null);
     }
   }
 
   async function handleAskAdaptiveQuestion() {
-    appendMessage('student', '🎲 Could you give me an adaptive question in my Zone of Proximal Development?', '', null);
+    appendMessage('student', '🎲 هل يمكنك إعطائي سؤال تدريبي تكيفي جديد؟', '', null);
     const typingRow = appendTypingIndicator();
 
     try {
@@ -273,30 +330,33 @@
 
       typingRow.remove();
 
-      const optionsHtml = item.options.map(o => `
-        <div style="margin: 0.35rem 0; padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
-          <strong>${o.key}:</strong> ${o.text}
-        </div>
+      const isEnglish = currentCourse && currentCourse.course_id === 'ENG-501';
+      const options = item.options || [];
+      const optionsHtml = options.map(o => `
+        <button type="button" class="mcq-option-btn" data-choice="${o.key}" data-text="${encodeURIComponent(o.text)}">
+          <span class="mcq-key-pill">${o.key}</span>
+          <span class="mcq-text-content ${isEnglish ? 'ltr-text' : 'rtl-text'}">${o.text}</span>
+        </button>
       `).join('');
 
       const content = `
-        <p>🎯 <strong>Adaptive Question (Agent 3 - ZPD)</strong></p>
-        <div style="display: flex; gap: 0.5rem; margin: 0.4rem 0;">
-          <span style="font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 99px; background: rgba(139, 92, 246, 0.2); color: #c4b5fd;">Bloom: ${item.bloom_level}</span>
-          <span style="font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 99px; background: rgba(6, 182, 212, 0.2); color: #67e8f9;">Difficulty: ${item.difficulty}</span>
+        <p style="font-weight: 600; color: #f8fafc; margin-bottom: 0.35rem;">🎯 <strong>سؤال تدريبي جديد:</strong></p>
+        <div style="background: rgba(0,0,0,0.32); border-radius: 8px; padding: 0.95rem; margin: 0.5rem 0; border-left: 4px solid var(--accent-indigo);">
+          <div class="${isEnglish ? 'ltr-text' : 'rtl-text'}" style="font-size: 1.02rem; font-weight: 600; line-height: 1.5; color: #f1f5f9;">
+            ${item.question_text.replace(/\n/g, '<br>')}
+          </div>
+          ${options.length > 0 ? `<div class="mcq-options-grid">${optionsHtml}</div>` : ''}
         </div>
-        <p style="margin-top: 0.4rem; font-weight: 500;">${item.question_text}</p>
-        ${item.code_snippet ? `<pre><code>${item.code_snippet}</code></pre>` : ''}
-        <div style="margin-top: 0.5rem;">${optionsHtml}</div>
-        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.4rem;">Type your answer or selection below!</p>
+        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.4rem;">اضغط على الاختيار المناسب أو اكتب إجابتك بالأسفل!</p>
       `;
 
-      appendMessage('tutor', content, 'practice-mode', null);
+      const msgRow = appendMessage('tutor', content, 'practice-mode', null);
+      attachMcqClickHandlers(msgRow);
 
     } catch (e) {
       typingRow.remove();
       console.error(e);
-      appendMessage('tutor', 'Could not generate an adaptive question at this moment.', 'escalation-mode', null);
+      appendMessage('tutor', 'تعذر توليد سؤال جديد حالياً. يمكنك تجربة اختيار المفهوم مرة أخرى.', 'escalation-mode', null);
     }
   }
 
@@ -319,71 +379,54 @@
     avatar.className = 'msg-avatar';
     avatar.textContent = sender === 'student' ? 'KE' : 'AI';
 
+    const hasArabic = /[\u0600-\u06FF]/.test(htmlContent);
+    const dirClass = hasArabic ? 'rtl-bubble' : 'ltr-bubble';
+
     const bubble = document.createElement('div');
-    bubble.className = `msg-bubble ${modeClass}`;
+    bubble.className = `msg-bubble ${modeClass} ${dirClass}`;
     bubble.innerHTML = htmlContent;
 
-    // Append collapsible agent telemetry drawer if agent data exists
+    // Append subtle source badge and collapsed teacher telemetry if agentData exists
     if (agentData) {
+      const citations = agentData.grounding?.citations || [];
+      if (citations.length > 0) {
+        const c = citations[0];
+        const badge = document.createElement('div');
+        badge.className = 'grounded-source-badge';
+        badge.innerHTML = `📖 المرجع المعتمد: ${c.source_file || 'كتاب الوزارة'} ${c.page_or_slide_number ? `(صـ ${c.page_or_slide_number})` : ''}`;
+        bubble.appendChild(badge);
+      }
+
+      // Collapsible Teacher Telemetry Details
       const accordion = document.createElement('div');
-      accordion.className = 'agent-telemetry-accordion';
-
+      accordion.className = 'simple-teacher-accordion';
+      
       const toggleBtn = document.createElement('button');
-      toggleBtn.className = 'telemetry-summary-btn';
-      const groundingCitations = agentData.grounding?.citations || [];
-      const hasCitations = groundingCitations.length > 0;
-      const groundingPct = Math.round((agentData.grounding?.confidence || 0.9) * 100);
-
+      toggleBtn.type = 'button';
+      toggleBtn.className = 'simple-teacher-toggle';
       toggleBtn.innerHTML = `
-        <span>🔍 Multi-Agent Telemetry:</span>
-        <strong style="color: ${agentData.misconception.detected ? '#f59e0b' : '#10b981'};">
-          ${agentData.misconception.detected ? 'Misconception Detected' : 'Clear'}
-        </strong>
-        <span style="color: #38bdf8;">• 📚 Grounded ${groundingPct}%</span>
-        <span>• Action: ${agentData.action_type}</span>
-        <span>▼</span>
+        <span>⚙️ تفاصيل التقييم الذكي للمعلم</span>
+        <span class="toggle-arrow">▼</span>
       `;
 
-      const citationsHtml = hasCitations ? `
-        <div style="margin-top: 0.3rem;">
-          <strong style="color: #38bdf8;">📚 Verified Course Citations (AI #1):</strong>
-          <ul style="margin: 0.25rem 0 0.4rem 1.1rem; font-size: 0.75rem; color: #cbd5e1; list-style: disc;">
-            ${groundingCitations.map(c => `
-              <li style="margin-bottom: 0.2rem;">
-                <span style="color: #67e8f9; font-weight: 600;">${c.citation_id}</span> 
-                <strong>${c.source_file}</strong> ${c.page_or_slide_number ? `(Slide/p. ${c.page_or_slide_number})` : ''}: 
-                <span style="color: #94a3b8; font-style: italic;">"${c.quoted_snippet}"</span>
-              </li>
-            `).join('')}
-          </ul>
-        </div>
-      ` : '';
-
-      const nextStepsHtml = agentData.grounding?.next_steps?.length > 0 ? `
-        <p style="font-size: 0.75rem; color: #c084fc; margin-top: 0.3rem;">
-          <strong>🧭 DAG Next Study Path:</strong> ${agentData.grounding.next_steps.join(' ➔ ')}
-        </p>
-      ` : '';
-
+      const delta = agentData.state_update.mastery_delta || 0;
+      const deltaSign = delta >= 0 ? '+' : '';
       const detailBox = document.createElement('div');
       detailBox.className = 'telemetry-detail-box';
+      detailBox.style.display = 'none';
+      detailBox.style.marginTop = '0.5rem';
       detailBox.innerHTML = `
-        <p><strong>AI #1 Grounding:</strong> Confidence: <span style="color: #38bdf8; font-weight: 600;">${groundingPct}%</span> (${agentData.grounding?.model_used || 'Claude 3.5 Sonnet Grounded'})</p>
-        ${citationsHtml}
-        ${nextStepsHtml}
-        <div style="margin-top: 0.4rem; padding-top: 0.35rem; border-top: 1px dashed rgba(255,255,255,0.1);">
-          <p><strong>Agent 1 (BKT):</strong> Mastery delta: <span style="color:${agentData.state_update.mastery_delta >= 0 ? '#10b981' : '#f43f5e'}">${agentData.state_update.mastery_delta >= 0 ? '+' : ''}${agentData.state_update.mastery_delta}</span> | Stability: ${agentData.state_update.memory_stability_days}d</p>
-          <p><strong>Agent 2 (Misconception):</strong> ${agentData.misconception.detected ? agentData.misconception.description : 'No misconception pattern identified.'}</p>
-          <p><strong>Agent 4 (Pedagogical Rule):</strong> ${agentData.reasoning}</p>
-          ${agentData.human_dossier ? `<p style="color: #f43f5e;"><strong>🚨 Agent 5 Escalation Dossier:</strong> Urgency ${agentData.human_dossier.urgency} — Mentor notified.</p>` : ''}
-        </div>
+        <p><strong>🎯 تشخيص الفهم:</strong> <span style="color: ${agentData.is_correct ? '#10b981' : '#f59e0b'}; font-weight: 600;">${agentData.is_correct ? 'إجابة صحيحة ومتقنة' : (agentData.misconception.description || 'بحاجة لتصويب وتوضيح')}</span></p>
+        <p><strong>📊 نسبة الإتقان (BKT):</strong> ${Math.round(agentData.state_update.new_mastery * 100)}% (تغيير: <span style="color:${delta >= 0 ? '#10b981' : '#f43f5e'}">${deltaSign}${Math.round(delta * 100)}%</span>)</p>
+        <p><strong>🧠 استقرار الذاكرة:</strong> ${agentData.state_update.memory_stability_days} أيام (منحنى إبنجهاوس)</p>
+        <p><strong>🧭 الإجراء التربوي:</strong> ${agentData.action_type}</p>
+        <p style="font-size: 0.76rem; color: #94a3b8; margin-top: 0.3rem;">${agentData.reasoning}</p>
       `;
 
-
       toggleBtn.addEventListener('click', () => {
-        const isHidden = detailBox.style.display === 'none' || !detailBox.style.display;
+        const isHidden = detailBox.style.display === 'none';
         detailBox.style.display = isHidden ? 'block' : 'none';
-        toggleBtn.querySelector('span:last-child').textContent = isHidden ? '▲' : '▼';
+        toggleBtn.querySelector('.toggle-arrow').textContent = isHidden ? '▲' : '▼';
       });
 
       accordion.appendChild(toggleBtn);
@@ -406,7 +449,7 @@
     row.innerHTML = `
       <div class="msg-avatar">AI</div>
       <div class="msg-bubble" style="color: var(--text-muted); font-style: italic; display: flex; align-items: center; gap: 0.4rem;">
-        <span style="animation: pulseGlow 1.5s infinite;">🧠 جاري التحليل عبر وكلاء الذكاء الاصطناعي (AI Agents Evaluating)...</span>
+        <span style="animation: pulseGlow 1.5s infinite;">🧠 جاري التقييم بواسطة المعلم الذكي...</span>
       </div>
     `;
     el.chatMessagesScroll.appendChild(row);

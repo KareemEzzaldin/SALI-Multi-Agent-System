@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SALI — AI Tutor & Student Cognitive Twin Chat</title>
   <meta name="description" content="Interactive AI Tutor Chat demonstrating 5 adaptive learning AI Agents with student profile and live cognitive tracing.">
-  <link rel="stylesheet" href="css/portal.css">
+  <link rel="stylesheet" href="css/portal.css?v=3.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
 </head>
 <body>
@@ -36,17 +36,16 @@
 
       <!-- Course Selection -->
       <div class="sidebar-section">
-        <label class="section-label" for="courseDropdown">Enrolled Course Subject</label>
+        <label class="section-label" for="courseDropdown">المادة الدراسية (Subject)</label>
         <select id="courseDropdown" class="sidebar-select">
           <!-- Populated by JS -->
         </select>
       </div>
 
-      <!-- Concepts & Mastery Vector (Agent 1) -->
+      <!-- Concepts & Mastery Vector -->
       <div class="sidebar-section" style="flex: 1; overflow-y: auto;">
         <div class="section-header-row">
-          <label class="section-label">Course Concepts & Mastery</label>
-          <span class="agent-chip">Agent 1: BKT</span>
+          <label class="section-label">دروس وموضوعات المنهج</label>
         </div>
 
         <div class="concepts-stack" id="conceptsStack">
@@ -54,13 +53,13 @@
         </div>
       </div>
 
-      <!-- Agent 3 Trigger & Actions -->
+      <!-- Actions -->
       <div class="sidebar-footer">
         <button id="btnAskAdaptiveQ" class="btn-sidebar-primary">
-          <span>🎲 Ask Tutor for Adaptive Question</span>
+          <span>🎲 سؤال تدريبي جديد (New Question)</span>
         </button>
         <button id="btnClearChat" class="btn-sidebar-secondary">
-          <span>🧹 Clear Conversation</span>
+          <span>🧹 مسح المحادثة (Clear)</span>
         </button>
       </div>
 
@@ -74,25 +73,20 @@
         <div class="topbar-info">
           <div class="active-badge-dot"></div>
           <div>
-            <h2 id="chatActiveTopic">Pointers & Object References</h2>
-            <p id="chatActiveCourseName">Python Systems & Memory Architecture</p>
+            <h2 id="chatActiveTopic">Past Simple & Irregular Verbs</h2>
+            <p id="chatActiveCourseName">English — Connect 5 (Primary 5)</p>
           </div>
         </div>
 
         <div class="topbar-telemetry">
           <div class="telemetry-pill">
-            <span class="pill-label">Mastery P(L):</span>
-            <strong id="topbarMastery" style="color: var(--accent-cyan);">35%</strong>
-          </div>
-          <div class="telemetry-pill">
-            <span class="pill-label">Stability:</span>
-            <strong id="topbarStability">2.4d</strong>
+            <span class="pill-label">⭐ مستوى الإتقان:</span>
+            <strong id="topbarMastery" style="color: var(--accent-cyan);">40%</strong>
           </div>
           <div class="agents-status-pill">
             <span class="status-indicator-dot"></span>
-            <span>AI #1 (Course RAG) + AI #2 (Cognitive Twin)</span>
+            <span>المعلم الذكي جاهز لمساعدتك</span>
           </div>
-
         </div>
       </header>
 
@@ -103,7 +97,7 @@
 
       <!-- Chat Quick Chips (Misconception Presets) -->
       <div class="chat-quick-chips" id="chatQuickChips">
-        <span class="chips-label">💡 Test Quick Misconceptions:</span>
+        <span class="chips-label">💡 تجربة سريعة للأخطاء الشائعة:</span>
         <div class="chips-container" id="chipsContainer">
           <!-- Chips injected by JS based on current concept -->
         </div>
@@ -115,9 +109,9 @@
           <textarea 
             id="chatInputText" 
             class="chat-textarea" 
-            placeholder="Type your answer, ask a question, or explain your thinking in Arabic or English..."
+            placeholder="اكتب إجابتك هنا، أو اضغط على أحد الاختيارات بالأعلى مباشرة..."
             rows="1"></textarea>
-          <button id="btnSendMessage" class="btn-send-message" title="Send Message">
+          <button id="btnSendMessage" class="btn-send-message" title="إرسال الإجابة">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -125,7 +119,7 @@
           </button>
         </div>
         <div class="input-disclaimer">
-          Responses are continuously evaluated by Agent 2 (Misconception Detection) & Agent 4 (Pedagogical Adaptor).
+          🤖 يتعرف المعلم الذكي على إجابتك سواء اخترت بالضغط أو كتبت الإجابة، ويقوم بتقييم فهمك وتقديم التوجيه المناسب فورياً.
         </div>
       </footer>
 
@@ -133,6 +127,6 @@
 
   </div>
 
-  <script src="js/portal.js"></script>
+  <script src="js/portal.js?v=3.0"></script>
 </body>
 </html>
