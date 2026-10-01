@@ -24,6 +24,8 @@
     courseDropdown: document.getElementById('courseDropdown'),
     conceptsStack: document.getElementById('conceptsStack'),
     btnAskAdaptiveQ: document.getElementById('btnAskAdaptiveQ'),
+    btnNextQ: document.getElementById('btnNextQ'),
+    btnExplainConcept: document.getElementById('btnExplainConcept'),
     btnClearChat: document.getElementById('btnClearChat'),
     chatActiveTopic: document.getElementById('chatActiveTopic'),
     chatActiveCourseName: document.getElementById('chatActiveCourseName'),
@@ -75,6 +77,19 @@
       }
     });
 
+    if (el.btnNextQ) {
+      el.btnNextQ.addEventListener('click', () => {
+        loadQuestionByIndex(currentQuestionIndex + 1);
+      });
+    }
+
+    if (el.btnExplainConcept) {
+      el.btnExplainConcept.addEventListener('click', () => {
+        el.chatInputText.value = 'ممكن تشرحلي الدرس بشكل احسن وبطريقة مبسطة؟';
+        handleSendMessage();
+      });
+    }
+
     el.btnAskAdaptiveQ.addEventListener('click', handleAskAdaptiveQuestion);
     el.btnClearChat.addEventListener('click', handleClearChat);
   }
@@ -121,6 +136,7 @@
     currentConcept = currentCourse.concepts.find(c => c.concept_id === conceptId) || currentCourse.concepts[0];
     consecutiveFailures = 0;
     attemptNumber = 1;
+    currentQuestionIndex = 0;
 
     // Update active highlight
     el.conceptsStack.querySelectorAll('.concept-card').forEach(c => {
@@ -170,16 +186,17 @@
     });
   }
 
+  let currentQuestionIndex = 0;
+
   // ─────────────────────────────────────────────
   // CONVERSATIONAL CHAT LOGIC
   // ─────────────────────────────────────────────
 
-  function postInitialTutorGreeting() {
-    const sampleQ = currentConcept.sample_question;
+  function buildQuestionCardHtml(qObj, qIndex, totalQuestions) {
+    if (!qObj) return '';
     const isEnglish = currentCourse && currentCourse.course_id === 'ENG-501';
-    const qText = sampleQ ? sampleQ.question_text : `يلا بينا نتدرب على مفهوم ${currentConcept.concept_name}`;
-    const options = sampleQ?.options || [];
-
+    const options = qObj.options || [];
+    
     let optionsHtml = '';
     if (options.length > 0) {
       optionsHtml = `
@@ -194,34 +211,63 @@
       `;
     }
 
-    const greetingHeading = isEnglish
-      ? `أهلاً بك يا بطل! 👋 يلا نتدرب على <strong>${currentConcept.concept_name}</strong>`
-      : `أهلاً بك يا بطل! 👋 يلا نتدرب على درس <strong>${currentConcept.concept_name}</strong>`;
+    const badgeLabel = isEnglish ? `Question ${qIndex + 1} of ${totalQuestions}` : `سؤال ${qIndex + 1} من ${totalQuestions}`;
 
-    const instructionsText = options.length > 0
-      ? 'اضغط على الاختيار المناسب مباشرة أو اكتب إجابتك بالأسفل:'
-      : 'اكتب إجابتك أو طريقتك في الحل في المربع بالأسفل:';
+    return `
+      <div class="question-container" data-qindex="${qIndex}">
+        <div class="question-badge-pill">📝 ${badgeLabel}</div>
+        <div style="background: rgba(0,0,0,0.32); border-radius: 8px; padding: 0.95rem; margin: 0.4rem 0; border-left: 4px solid var(--accent-cyan);">
+          <div class="${isEnglish ? 'ltr-text' : 'rtl-text'}" style="font-size: 1.02rem; font-weight: 600; line-height: 1.5; color: #f1f5f9;">
+            ${(qObj.question_text || '').replace(/\n/g, '<br>')}
+          </div>
+          ${optionsHtml}
+        </div>
+        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.35rem; direction: rtl; text-align: right;">
+          💡 ${options.length > 0 ? 'اضغط على الاختيار المناسب فوراً أو اكتب إجابتك بالأسفل:' : 'اكتب إجابتك في المربع بالأسفل:'}
+        </p>
+      </div>
+    `;
+  }
+
+  function postInitialTutorGreeting() {
+    currentQuestionIndex = 0;
+    const questions = currentConcept.questions || (currentConcept.sample_question ? [currentConcept.sample_question] : []);
+    const totalQ = questions.length;
+    const qObj = questions[currentQuestionIndex] || currentConcept.sample_question;
+
+    const greetingHeading = `أهلاً بك يا بطل! 👋 يلا نتدرب على درس <span dir="auto" style="color: var(--accent-cyan); font-weight: 700;">"${currentConcept.concept_name}"</span>`;
+    const questionCardHtml = buildQuestionCardHtml(qObj, currentQuestionIndex, totalQ);
 
     const initialContent = `
       <p style="font-weight: 600; font-size: 0.98rem; color: #f8fafc; margin-bottom: 0.35rem; direction: rtl; text-align: right;">
-        أهلاً بك يا بطل! 👋 يلا نتدرب على <span dir="auto" style="color: var(--accent-cyan); font-weight: 700;">${currentConcept.concept_name}</span>
+        ${greetingHeading}
       </p>
       <p style="color: #cbd5e1; font-size: 0.88rem; margin-bottom: 0.6rem; direction: rtl; text-align: right;">
-        ${instructionsText}
+        إليك أسئلة تدريبية متدرجة، وتقدر تطلب مني شرح أو توضيح في أي وقت:
       </p>
-      <div style="background: rgba(0,0,0,0.32); border-radius: 8px; padding: 0.95rem; margin: 0.5rem 0; border-left: 4px solid var(--accent-cyan);">
-        <div class="${isEnglish ? 'ltr-text' : 'rtl-text'}" style="font-size: 1.02rem; font-weight: 600; line-height: 1.5; color: #f1f5f9;">
-          ${qText.replace(/\n/g, '<br>')}
-        </div>
-        ${optionsHtml}
-      </div>
-      <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.4rem; direction: rtl; text-align: right;">
-        💡 ${options.length > 0 ? 'تقدر تضغط على الزر للإجابة فوراً، أو تكتبها بإيدك بالطريقة اللي تريحك!' : 'اكتب إجابتك وسيقوم المعلم الذكي بمراجعتها فوراً!'}
-      </p>
+      ${questionCardHtml}
     `;
 
     const msgRow = appendMessage('tutor', initialContent, 'practice-mode', null);
     attachMcqClickHandlers(msgRow);
+  }
+
+  function loadQuestionByIndex(index) {
+    const questions = currentConcept.questions || [currentConcept.sample_question];
+    const totalQ = questions.length;
+    currentQuestionIndex = index % totalQ;
+    const qObj = questions[currentQuestionIndex];
+
+    const content = `
+      <p style="font-weight: 600; color: #f8fafc; margin-bottom: 0.4rem; direction: rtl; text-align: right;">
+        تفضل يا بطل السؤال الجديد:
+      </p>
+      ${buildQuestionCardHtml(qObj, currentQuestionIndex, totalQ)}
+    `;
+
+    const msgRow = appendMessage('tutor', content, 'practice-mode', null);
+    attachMcqClickHandlers(msgRow);
+    el.chatInputText.focus();
   }
 
   function attachMcqClickHandlers(container) {
@@ -266,6 +312,7 @@
         course_id: currentCourse.course_id,
         concept_id: currentConcept.concept_id,
         student_message: text,
+        question_index: currentQuestionIndex,
         consecutive_failures: consecutiveFailures,
         attempt_number: attemptNumber
       };
@@ -281,18 +328,22 @@
 
       typingRow.remove();
 
-      // Update counters
-      attemptNumber++;
-      if (!data.is_correct) {
-        consecutiveFailures++;
-      } else {
-        consecutiveFailures = 0;
-      }
+      // Update counters & mastery only if this was an actual evaluation (not explanation)
+      if (data.is_correct !== null && data.is_correct !== undefined) {
+        attemptNumber++;
+        if (!data.is_correct) {
+          consecutiveFailures++;
+        } else {
+          consecutiveFailures = 0;
+        }
 
-      // Update concept mastery locally
-      currentConcept.mastery = data.state_update.new_mastery;
-      currentConcept.stability = data.state_update.memory_stability_days;
-      updateTopbarTelemetry();
+        // Update concept mastery locally
+        if (data.state_update) {
+          currentConcept.mastery = data.state_update.new_mastery;
+          currentConcept.stability = data.state_update.memory_stability_days;
+          updateTopbarTelemetry();
+        }
+      }
 
       // Render Tutor Reply
       let modeClass = 'practice-mode';
@@ -300,12 +351,106 @@
       else if (data.action_type === 'remediation') modeClass = 'remediation-mode';
       else if (data.action_type === 'escalation') modeClass = 'escalation-mode';
 
-      appendMessage('tutor', data.tutor_reply.replace(/\n/g, '<br>'), modeClass, data);
+      const tutorRow = appendMessage('tutor', data.tutor_reply.replace(/\n/g, '<br>'), modeClass, data);
+
+      // Append Interactive Action Buttons based on context
+      attachTutorActionButtons(tutorRow, data);
 
     } catch (err) {
       typingRow.remove();
       console.error('Chat error:', err);
       appendMessage('tutor', `<p style="color: #f43f5e;">⚠️ حدث خطأ في التواصل مع المعلم الذكي. يرجى التأكد من تشغيل السيرفر على منفذ 8000.</p>`, 'escalation-mode', null);
+    }
+  }
+
+  function attachTutorActionButtons(tutorRow, data) {
+    if (!tutorRow || !data) return;
+    const bubble = tutorRow.querySelector('.msg-bubble');
+    if (!bubble) return;
+
+    const actionRow = document.createElement('div');
+    actionRow.className = 'chat-action-btn-row';
+
+    // 1. If tutor just delivered an explanation:
+    if (data.is_explanation) {
+      const btnRetry = document.createElement('button');
+      btnRetry.type = 'button';
+      btnRetry.className = 'chat-action-btn';
+      btnRetry.innerHTML = '<span>🔄 نجرب السؤال ده تاني</span>';
+      btnRetry.addEventListener('click', () => {
+        loadQuestionByIndex(currentQuestionIndex);
+      });
+
+      const btnNext = document.createElement('button');
+      btnNext.type = 'button';
+      btnNext.className = 'chat-action-btn';
+      const nextIdx = (currentQuestionIndex + 1) % (data.total_questions || 3);
+      btnNext.innerHTML = `<span>🚀 السؤال التالي (${nextIdx + 1}/${data.total_questions || 3})</span>`;
+      btnNext.addEventListener('click', () => {
+        loadQuestionByIndex(nextIdx);
+      });
+
+      actionRow.appendChild(btnRetry);
+      actionRow.appendChild(btnNext);
+    }
+    // 2. If student answered correctly:
+    else if (data.is_correct === true) {
+      const nextIdx = data.next_question_index !== undefined ? data.next_question_index : currentQuestionIndex + 1;
+      const totalQ = data.total_questions || 3;
+
+      const btnNext = document.createElement('button');
+      btnNext.type = 'button';
+      btnNext.className = 'chat-action-btn';
+
+      if (data.next_question_available) {
+        btnNext.innerHTML = `<span>🚀 السؤال التالي (${nextIdx + 1} من ${totalQ})</span>`;
+        btnNext.addEventListener('click', () => {
+          loadQuestionByIndex(nextIdx);
+        });
+      } else {
+        btnNext.innerHTML = `<span>🏆 عاش يا بطل! مراجعة أسئلة الدرس من البداية</span>`;
+        btnNext.addEventListener('click', () => {
+          loadQuestionByIndex(0);
+        });
+      }
+
+      actionRow.appendChild(btnNext);
+    }
+    // 3. If student answered incorrectly (or misconception):
+    else if (data.is_correct === false) {
+      const btnExplain = document.createElement('button');
+      btnExplain.type = 'button';
+      btnExplain.className = 'chat-action-btn';
+      btnExplain.innerHTML = '<span>💡 اشرحلي الطريقة بأسهل شكل</span>';
+      btnExplain.addEventListener('click', () => {
+        el.chatInputText.value = 'ممكن تشرحلي بشكل احسن';
+        handleSendMessage();
+      });
+
+      const btnRetry = document.createElement('button');
+      btnRetry.type = 'button';
+      btnRetry.className = 'chat-action-btn secondary';
+      btnRetry.innerHTML = '<span>🔄 حاول مرة تانية</span>';
+      btnRetry.addEventListener('click', () => {
+        loadQuestionByIndex(currentQuestionIndex);
+      });
+
+      const btnSkip = document.createElement('button');
+      btnSkip.type = 'button';
+      btnSkip.className = 'chat-action-btn secondary';
+      const nextIdx = (currentQuestionIndex + 1) % (data.total_questions || 3);
+      btnSkip.innerHTML = `<span>⏩ تخطي للسؤال التالي (${nextIdx + 1})</span>`;
+      btnSkip.addEventListener('click', () => {
+        loadQuestionByIndex(nextIdx);
+      });
+
+      actionRow.appendChild(btnExplain);
+      actionRow.appendChild(btnRetry);
+      actionRow.appendChild(btnSkip);
+    }
+
+    if (actionRow.children.length > 0) {
+      bubble.appendChild(actionRow);
     }
   }
 
@@ -364,6 +509,7 @@
     el.chatMessagesScroll.innerHTML = '';
     consecutiveFailures = 0;
     attemptNumber = 1;
+    currentQuestionIndex = 0;
     postInitialTutorGreeting();
   }
 

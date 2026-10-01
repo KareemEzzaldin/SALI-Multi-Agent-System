@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SALI — AI Tutor & Student Cognitive Twin Chat</title>
   <meta name="description" content="Interactive AI Tutor Chat demonstrating 5 adaptive learning AI Agents with student profile and live cognitive tracing.">
-  <link rel="stylesheet" href="css/portal.css?v=3.0">
+  <link rel="stylesheet" href="css/portal.css?v=4.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
 </head>
 <body>
@@ -55,10 +55,16 @@
 
       <!-- Actions -->
       <div class="sidebar-footer">
-        <button id="btnAskAdaptiveQ" class="btn-sidebar-primary">
-          <span>🎲 سؤال تدريبي جديد (New Question)</span>
+        <button id="btnNextQ" class="btn-sidebar-primary" style="background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.4); color: #67e8f9;">
+          <span>⏩ السؤال التالي (Next Question)</span>
         </button>
-        <button id="btnClearChat" class="btn-sidebar-secondary">
+        <button id="btnExplainConcept" class="btn-sidebar-secondary" style="border-color: rgba(99, 102, 241, 0.4); color: #c4b5fd;">
+          <span>💡 اشرحلي الدرس (Explain Lesson)</span>
+        </button>
+        <button id="btnAskAdaptiveQ" class="btn-sidebar-secondary">
+          <span>🎲 سؤال تكيفي جديد (Adaptive Q)</span>
+        </button>
+        <button id="btnClearChat" class="btn-sidebar-secondary" style="opacity: 0.75;">
           <span>🧹 مسح المحادثة (Clear)</span>
         </button>
       </div>
@@ -127,6 +133,6 @@
 
   </div>
 
-  <script src="js/portal.js?v=3.0"></script>
+  <script src="js/portal.js?v=4.0"></script>
 </body>
 </html>
