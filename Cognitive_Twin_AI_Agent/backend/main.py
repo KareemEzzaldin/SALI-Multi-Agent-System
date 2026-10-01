@@ -155,10 +155,25 @@ async def chat_with_tutor(req: ChatMessageRequest):
 
     msg_lower = req.student_message.lower().strip()
     
-    # Check if student answer is correct or reveals a misconception
+    # Dynamic check if student answer matches misconception presets or correct answer
+    import re
     sample_q = concept.get("sample_question", {})
-    correct_keywords = ["same", "reference", "address", "persist", "definition", "nonlocal", "amortized", "chaining", "log"]
-    is_correct = any(kw in msg_lower for kw in correct_keywords) and not any(kw in msg_lower for kw in ["copy", "clone", "error", "overwrite", "each call", "re-initialized"])
+    presets = sample_q.get("misconception_presets", [])
+    matched_misconception = None
+
+    for p in presets:
+        p_ans = p.get("answer", "").lower()
+        p_keywords = [w for w in re.findall(r"[\w\u0600-\u06FF]+", p_ans) if len(w) >= 3]
+        if any(kw in msg_lower for kw in p_keywords):
+            matched_misconception = p.get("expected_misconception") or p.get("title")
+            break
+
+    corr_ans = sample_q.get("correct_answer", "").lower()
+    corr_keywords = [w for w in re.findall(r"[\w\u0600-\u06FF]+", corr_ans) if len(w) >= 3]
+    has_correct_keywords = any(kw in msg_lower for kw in corr_keywords)
+
+    is_correct = has_correct_keywords and (not matched_misconception)
+
     
     # Agent 2: Misconception Detection
     misc_signal = MisconceptionDetectionAgent.diagnose(

@@ -1,0 +1,75 @@
+{
+  "course_id": "ENG-501",
+  "course_title": "English — Connect 5 (Primary 5)",
+  "academic_level": "Primary 5 (Grade 5)",
+  "total_outcomes": 4,
+  "outcomes": [
+    {
+      "outcome_id": "CLO-ENG-1",
+      "title": "Past Simple Verb Conjugation",
+      "description": "Student will be able to differentiate regular and irregular verbs in affirmative and negative past simple sentences.",
+      "bloom_level": "apply",
+      "action_verbs": [
+        "differentiate",
+        "conjugate",
+        "apply"
+      ],
+      "target_skills": [
+        "Past Simple Tense",
+        "Irregular Verbs"
+      ],
+      "assessment_rubric_hint": "Check if student avoids over-regularization like 'goed' and uses base form after didn't."
+    },
+    {
+      "outcome_id": "CLO-ENG-2",
+      "title": "Quantifier Precision (Some/Any/Much/Many)",
+      "description": "Student will be able to select appropriate quantifiers for countable and uncountable nouns in various sentence types.",
+      "bloom_level": "understand",
+      "action_verbs": [
+        "classify",
+        "select",
+        "explain"
+      ],
+      "target_skills": [
+        "Countable vs Uncountable",
+        "Quantifiers"
+      ],
+      "assessment_rubric_hint": "Verify student uses 'any' in negatives and questions, and 'much' exclusively with uncountables."
+    },
+    {
+      "outcome_id": "CLO-ENG-3",
+      "title": "Comparative and Superlative Structures",
+      "description": "Student will be able to construct grammatically sound comparative and superlative adjective statements.",
+      "bloom_level": "apply",
+      "action_verbs": [
+        "construct",
+        "compare",
+        "demonstrate"
+      ],
+      "target_skills": [
+        "Short vs Long Adjectives",
+        "Comparative Sentences"
+      ],
+      "assessment_rubric_hint": "Ensure student does not stack double comparatives like 'more faster'."
+    },
+    {
+      "outcome_id": "CLO-ENG-4",
+      "title": "Ecosystem Comprehension and Environmental Vocabulary",
+      "description": "Student will be able to explain how living and non-living elements interact in Egyptian coastal ecosystems.",
+      "bloom_level": "understand",
+      "action_verbs": [
+        "explain",
+        "describe",
+        "identify"
+      ],
+      "target_skills": [
+        "Ecosystems",
+        "Egyptian Marine Life",
+        "Mangroves"
+      ],
+      "assessment_rubric_hint": "Assess whether student recognizes both biotic and abiotic components in ecosystem balance."
+    }
+  ],
+  "created_at": "2026-10-01T08:13:46.478855Z",
+  "metadata": {}
+}

@@ -1,0 +1,114 @@
+{
+  "course_id": "ENG-501",
+  "course_title": "English — Connect 5 (Primary 5)",
+  "nodes": [
+    {
+      "concept_id": "c_past_simple",
+      "name": "Past Simple & Irregular Verbs",
+      "description": "Grammatical rules of past simple tense, regular -ed vs irregular verb changes, and didn't + base verb.",
+      "difficulty": "beginner",
+      "estimated_learning_hours": 2.0,
+      "linked_outcome_ids": [
+        "CLO-ENG-1"
+      ],
+      "key_terms": [
+        "past",
+        "went",
+        "visited",
+        "didn't",
+        "irregular",
+        "yesterday"
+      ]
+    },
+    {
+      "concept_id": "c_nouns_quantifiers",
+      "name": "Countable / Uncountable & Some / Any",
+      "description": "Distinction between count/uncount nouns, liquids and food items, and usage of some, any, much, many.",
+      "difficulty": "beginner",
+      "estimated_learning_hours": 2.5,
+      "linked_outcome_ids": [
+        "CLO-ENG-2"
+      ],
+      "key_terms": [
+        "countable",
+        "uncountable",
+        "water",
+        "apple",
+        "some",
+        "any",
+        "many",
+        "much"
+      ]
+    },
+    {
+      "concept_id": "c_comparatives_superlatives",
+      "name": "Comparatives & Superlatives",
+      "description": "Adjective modification using -er than, the -est, more than, and the most without double comparative stacking.",
+      "difficulty": "intermediate",
+      "estimated_learning_hours": 3.0,
+      "linked_outcome_ids": [
+        "CLO-ENG-3"
+      ],
+      "key_terms": [
+        "faster",
+        "biggest",
+        "more",
+        "most",
+        "than",
+        "cheetah"
+      ]
+    },
+    {
+      "concept_id": "c_egypt_ecosystems",
+      "name": "Ecosystems & Egyptian Wildlife",
+      "description": "Egyptian ecosystems, Red Sea coastal mangroves, marine organisms, and abiotic environmental factors.",
+      "difficulty": "intermediate",
+      "estimated_learning_hours": 2.5,
+      "linked_outcome_ids": [
+        "CLO-ENG-4"
+      ],
+      "key_terms": [
+        "ecosystem",
+        "mangrove",
+        "red sea",
+        "marine",
+        "environment",
+        "wildlife"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "c_nouns_quantifiers",
+      "target_id": "c_comparatives_superlatives",
+      "relation_type": "prerequisite_of",
+      "weight": 1.0,
+      "explanation": "Understanding noun quantities and objects precedes comparing qualities across items."
+    },
+    {
+      "source_id": "c_past_simple",
+      "target_id": "c_egypt_ecosystems",
+      "relation_type": "prerequisite_of",
+      "weight": 1.0,
+      "explanation": "Past tense narrative structures are foundational for describing past field observations in natural ecosystems."
+    }
+  ],
+  "is_dag": true,
+  "topological_learning_path": [
+    "c_past_simple",
+    "c_nouns_quantifiers",
+    "c_egypt_ecosystems",
+    "c_comparatives_superlatives"
+  ],
+  "detected_cycles": [],
+  "root_concepts": [
+    "c_past_simple",
+    "c_nouns_quantifiers"
+  ],
+  "terminal_concepts": [
+    "c_egypt_ecosystems",
+    "c_comparatives_superlatives"
+  ],
+  "created_at": "2026-10-01T08:13:46.480113Z",
+  "metadata": {}
+}

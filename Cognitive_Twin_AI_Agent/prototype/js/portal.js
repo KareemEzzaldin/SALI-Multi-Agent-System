@@ -176,19 +176,20 @@
 
   function postInitialTutorGreeting() {
     const sampleQ = currentConcept.sample_question;
-    const qText = sampleQ ? sampleQ.question_text : `How does memory allocation and execution work for ${currentConcept.concept_name}?`;
+    const qText = sampleQ ? sampleQ.question_text : `ما رأيك أن نتحدث عن مفهوم ${currentConcept.concept_name}؟`;
 
     const initialContent = `
-      <p>Hello Kareem! 👋 Let's explore <strong>${currentConcept.concept_name}</strong>.</p>
-      <p style="margin-top: 0.5rem;">Here is an exploratory question to calibrate your Cognitive Twin:</p>
+      <p>أهلاً يا بطل! 👋 جاهز نتدرب على <strong>${currentConcept.concept_name}</strong>؟</p>
+      <p style="margin-top: 0.4rem;">إليك هذا السؤال لاختبار فهمك ومعايرة توأمك المعرفي:</p>
       <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 0.8rem; margin: 0.6rem 0; border-left: 3px solid var(--accent-cyan); font-weight: 500;">
         ${qText.replace(/\n/g, '<br>')}
       </div>
-      <p style="font-size: 0.85rem; color: #94a3b8;">Type your explanation below, or click one of the quick test chips above to simulate a misconception!</p>
+      <p style="font-size: 0.85rem; color: #94a3b8;">اكتب إجابتك أو فكرتك، أو اضغط على أحد شرائح الأخطاء الشائعة بالأعلى لتجربة رد الذكاء الاصطناعي!</p>
     `;
 
     appendMessage('tutor', initialContent, 'practice-mode', null);
   }
+
 
   async function handleSendMessage() {
     const text = el.chatInputText.value.trim();
@@ -405,7 +406,7 @@
     row.innerHTML = `
       <div class="msg-avatar">AI</div>
       <div class="msg-bubble" style="color: var(--text-muted); font-style: italic; display: flex; align-items: center; gap: 0.4rem;">
-        <span style="animation: pulseGlow 1.5s infinite;">🧠 Evaluating through 5 AI Agents...</span>
+        <span style="animation: pulseGlow 1.5s infinite;">🧠 جاري التحليل عبر وكلاء الذكاء الاصطناعي (AI Agents Evaluating)...</span>
       </div>
     `;
     el.chatMessagesScroll.appendChild(row);
@@ -414,25 +415,44 @@
   }
 
   // ─────────────────────────────────────────────
-  // FALLBACK DATA
+  // FALLBACK DATA (PRIMARY 5)
   // ─────────────────────────────────────────────
 
   function getFallbackCourses() {
     return [
       {
-        course_id: "CS-201",
-        course_title: "Python Systems & Memory Architecture",
-        code: "CS-201",
+        course_id: "ENG-501",
+        course_title: "English — Connect 5 (Primary 5)",
+        code: "ENG-501",
         concepts: [
           {
-            concept_id: "c_ptr_mem",
-            concept_name: "Pointers & Object References",
-            mastery: 0.35,
-            stability: 2.4,
+            concept_id: "c_past_simple",
+            concept_name: "Past Simple & Irregular Verbs",
+            mastery: 0.40,
+            stability: 2.2,
             sample_question: {
-              question_text: "Given list_a = [1, 2, 3] and list_b = list_a, what happens if list_b.append(4)?",
+              question_text: "Yesterday, my family and I ______ to Alexandria and we ______ the Qaitbay Citadel.",
               misconception_presets: [
-                { title: "Deep Copy Fallacy", answer: "list_a stays [1, 2, 3] because assigning created a separate copy" }
+                { title: "Over-regularization ('goed')", answer: "We goed to Alexandria and visited the Citadel" }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        course_id: "MATH-501",
+        course_title: "الرياضيات — الصف الخامس الابتدائي",
+        code: "MATH-501",
+        concepts: [
+          {
+            concept_id: "c_decimals_place_value",
+            concept_name: "الكسور العشرية والقيمة المكانية حتى الجزء من ألف",
+            mastery: 0.35,
+            stability: 2.0,
+            sample_question: {
+              question_text: "قارن بين العددين العشريين: 0.8 و 0.25 مستخدماً (> أو < أو =).",
+              misconception_presets: [
+                { title: "مغالطة مقارنة العدد الصحيح", answer: "0.25 أكبر من 0.8 لأن 25 أكبر من 8" }
               ]
             }
           }
@@ -440,6 +460,7 @@
       }
     ];
   }
+
 
   window.addEventListener('DOMContentLoaded', init);
 

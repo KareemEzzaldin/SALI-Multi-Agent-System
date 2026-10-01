@@ -1,125 +1,136 @@
 """
-SALI Prototype — Sample Courses Data
-Provides 2 full courses with structured concepts, course evidence grounding,
-and pre-built misconception triggers for testing the AI Agents.
+SALI — Primary 5 Courses Data (Egyptian Curriculum)
+Provides 2 accredited Primary 5 (الصف الخامس الابتدائي) courses:
+1. English (Connect 5) — Grammar, Quantifiers, Adjectives, Ecosystems
+2. Mathematics (الرياضيات) — Decimals, Unlike Fractions, Operations, GCF/LCM
+Includes calibrated misconceptions, sample questions, and pedagogical evidence.
 """
 
 STUDENT_PROFILE = {
-    "student_id": "STD-2026-904",
-    "name": "Kareem Ezzaldin",
-    "email": "kareem.ezz.1972@gmail.com",
-    "degree": "B.Sc. Artificial Intelligence & Software Systems",
-    "semester": "Year 3, Fall 2026",
-    "overall_cognitive_index": 0.72,
-    "current_streak_days": 8,
-    "memory_stability_days": 5.4
+    "student_id": "STD-PRI5-104",
+    "name": "كريم عز الدين (Kareem)",
+    "email": "kareem.grade5@sali-learning.eg",
+    "degree": "Primary 5 (Grade 5) — الصف الخامس الابتدائي",
+    "semester": "Term 1, Academic Year 2026/2027",
+    "overall_cognitive_index": 0.68,
+    "current_streak_days": 6,
+    "memory_stability_days": 3.8
 }
 
 COURSES_DATA = [
     {
-        "course_id": "CS-201",
-        "course_title": "Python Systems & Memory Architecture",
-        "code": "CS-201",
-        "description": "Deep dive into memory layout, pointer mechanics, execution stacks, and runtime behavior.",
-        "instructor": "Dr. Nadia Vance",
+        "course_id": "ENG-501",
+        "course_title": "English — Connect 5 (Primary 5)",
+        "code": "ENG-501",
+        "description": "Ministry of Education Connect 5 curriculum: Past Simple, Quantifiers, Adjectives, and Egyptian Ecosystems.",
+        "instructor": "Teacher / مستر أحمد فاروق",
         "concepts": [
             {
-                "concept_id": "c_ptr_mem",
-                "concept_name": "Pointers & Object References",
-                "mastery": 0.35,
-                "stability": 2.4,
-                "last_practiced": "2026-09-18",
+                "concept_id": "c_past_simple",
+                "concept_name": "Past Simple & Irregular Verbs",
+                "mastery": 0.40,
+                "stability": 2.2,
+                "last_practiced": "2026-09-28",
                 "course_evidence": (
-                    "In Python, variables do not store raw values directly in place; instead, they hold object "
-                    "references (pointers) pointing to heap-allocated objects. Assignment statements (a = b) bind "
-                    "the name 'a' to the existing object reference of 'b' rather than cloning or deep-copying memory. "
-                    "Mutating an object through one reference reflects in all aliases pointing to the identical memory address (id(a) == id(b))."
+                    "In Connect 5 Unit 1, we use the Past Simple tense to talk about actions finished in the past. "
+                    "Regular verbs add -ed (visited, played, cooked). Irregular verbs change completely and NEVER take -ed "
+                    "(go -> went, see -> saw, buy -> bought, have -> had). "
+                    "In negative sentences, we use 'didn't' followed by the infinitive base verb (e.g., 'He didn't go', NOT 'didn't went')."
                 ),
                 "sample_question": {
-                    "question_id": "q_ptr_01",
-                    "question_text": "Given `list_a = [1, 2, 3]` and `list_b = list_a`, followed by `list_b.append(4)`, what is `list_a`?",
-                    "correct_answer": "[1, 2, 3, 4] because list_a and list_b point to the same list in memory",
+                    "question_id": "q_eng_01",
+                    "question_text": "Yesterday, my family and I ______ to Alexandria and we ______ the Qaitbay Citadel.",
+                    "correct_answer": "went / visited (because 'go' is irregular and changes to 'went', while 'visit' is regular and takes '-ed')",
                     "misconception_presets": [
                         {
-                            "title": "Pass-by-Value / Deep Copy Fallacy",
-                            "answer": "[1, 2, 3] because assigning list_b creates an independent copy of list_a",
-                            "expected_misconception": "Treating pointer/reference assignment as a separate value clone"
+                            "title": "Over-regularization Fallacy ('goed')",
+                            "answer": "goed / visited because all past verbs must end with -ed",
+                            "expected_misconception": "Applying regular -ed rule to irregular verbs like 'go'"
                         },
                         {
-                            "title": "Immutable Rebinding Fallacy",
-                            "answer": "Error: you cannot append to a list through another reference",
-                            "expected_misconception": "Believing alias variables cannot mutate shared references"
+                            "title": "Double Past Tense Fallacy ('didn't went')",
+                            "answer": "We didn't went because both words must be in the past tense",
+                            "expected_misconception": "Using past form after auxiliary 'didn't' instead of base infinitive"
                         }
                     ]
                 }
             },
             {
-                "concept_id": "c_mut_args",
-                "concept_name": "Mutable Default Arguments",
-                "mastery": 0.58,
-                "stability": 4.1,
-                "last_practiced": "2026-09-19",
+                "concept_id": "c_nouns_quantifiers",
+                "concept_name": "Countable / Uncountable & Some / Any",
+                "mastery": 0.55,
+                "stability": 3.4,
+                "last_practiced": "2026-09-29",
                 "course_evidence": (
-                    "Python evaluates default argument expressions once at the moment the function definition is executed, "
-                    "NOT each time the function is called. When a mutable default argument like a list or dictionary "
-                    "is modified inside the function body, that mutated object persists across subsequent calls."
+                    "In Connect 5 Unit 2 (At the Market), countable nouns have a singular and plural form (an apple, three apples). "
+                    "Uncountable nouns cannot be counted and have NO plural form (water, milk, rice, money). "
+                    "We use 'many' with countable nouns and 'much' with uncountable nouns. "
+                    "We use 'some' in affirmative sentences ('I have some rice') and polite offers ('Would you like some tea?'), "
+                    "and 'any' in negative sentences ('We don't have any milk') and questions."
                 ),
                 "sample_question": {
-                    "question_id": "q_mut_01",
-                    "question_text": "def add_item(val, items=[]):\n    items.append(val)\n    return items\nWhat does calling add_item(1) then add_item(2) return?",
-                    "correct_answer": "[1, 2] because the default list is created once at definition time and shared across invocations",
+                    "question_id": "q_eng_02",
+                    "question_text": "Choose the correct words: We don't have ______ milk in the fridge, but there are ______ fresh apples.",
+                    "correct_answer": "any / some (use 'any' in negative sentences and 'some' in positive sentences with plural nouns)",
                     "misconception_presets": [
                         {
-                            "title": "Invocation-Time Evaluation Fallacy",
-                            "answer": "[2] because items gets re-initialized as a new empty list [] on each call",
-                            "expected_misconception": "Assuming default parameters are freshly instantiated on each invocation"
+                            "title": "Pluralizing Uncountable Fallacy ('many waters')",
+                            "answer": "There are many waters and milks in the fridge",
+                            "expected_misconception": "Treating liquids and uncountable nouns as countable plurals with 'many'"
+                        },
+                        {
+                            "title": "Negative 'Some' Fallacy",
+                            "answer": "We don't have some milk because some means a small quantity",
+                            "expected_misconception": "Using 'some' in negative clauses instead of 'any'"
                         }
                     ]
                 }
             },
             {
-                "concept_id": "c_rec_stack",
-                "concept_name": "Recursion & Call Stack Frames",
-                "mastery": 0.42,
+                "concept_id": "c_comparatives_superlatives",
+                "concept_name": "Comparatives & Superlatives",
+                "mastery": 0.48,
                 "stability": 2.8,
-                "last_practiced": "2026-09-17",
+                "last_practiced": "2026-09-27",
                 "course_evidence": (
-                    "Every recursive call creates an independent stack frame on the call stack preserving local variables. "
-                    "A recursive function MUST have an explicit base case condition to halt the recursion; otherwise, the call "
-                    "stack grows unbounded until reaching sys.getrecursionlimit(), triggering a RecursionError."
+                    "In Connect 5 Unit 3, for short adjectives (one syllable), we add -er + than for comparison (fast -> faster than, big -> bigger than) "
+                    "and the + -est for superlatives (the fastest, the biggest). For long adjectives with two or more syllables, "
+                    "we use 'more / less + adjective + than' (more dangerous than) and 'the most / least' (the most dangerous). "
+                    "We NEVER combine 'more' with '-er' (e.g. 'more faster' is strictly incorrect)."
                 ),
                 "sample_question": {
-                    "question_id": "q_rec_01",
-                    "question_text": "What causes a Python program with recursion to throw RecursionError: maximum recursion depth exceeded?",
-                    "correct_answer": "Lack of a reached base case causing stack frames to accumulate without unwinding",
+                    "question_id": "q_eng_03",
+                    "question_text": "The cheetah is ______ (fast) land animal, and it is ______ (fast) than a lion.",
+                    "correct_answer": "the fastest / faster than",
                     "misconception_presets": [
                         {
-                            "title": "Implicit Termination Fallacy",
-                            "answer": "The function automatically detects when to stop based on variable decrease",
-                            "expected_misconception": "Believing runtime stops recursion automatically without explicit base cases"
+                            "title": "Double Comparative Fallacy ('more faster')",
+                            "answer": "The cheetah is the most fastest and it is more faster than a lion",
+                            "expected_misconception": "Stacking 'more' or 'most' on top of short adjective suffixes -er/-est"
                         }
                     ]
                 }
             },
             {
-                "concept_id": "c_scope_lex",
-                "concept_name": "Variable Scope & Closures",
-                "mastery": 0.81,
-                "stability": 9.5,
-                "last_practiced": "2026-09-15",
+                "concept_id": "c_egypt_ecosystems",
+                "concept_name": "Ecosystems & Egyptian Wildlife",
+                "mastery": 0.62,
+                "stability": 4.5,
+                "last_practiced": "2026-09-30",
                 "course_evidence": (
-                    "Python resolves variable names following the LEGB rule (Local, Enclosing, Global, Built-in). "
-                    "Assigning to a variable inside a function makes it local unless explicitly declared with 'global' or 'nonlocal'."
+                    "An ecosystem is a community where living things (plants, animals) interact with non-living elements (water, soil, sunlight). "
+                    "In Egypt, coastal mangrove trees along the Red Sea protect shorelines from storms and erosion while providing a safe habitat "
+                    "for young fish and crabs. The Nile River ecosystem supports rich soil and wetland biodiversity."
                 ),
                 "sample_question": {
-                    "question_id": "q_scp_01",
-                    "question_text": "Inside a nested function, which keyword allows rebinding a variable defined in the enclosing non-global scope?",
-                    "correct_answer": "nonlocal",
+                    "question_id": "q_eng_04",
+                    "question_text": "Why are mangrove trees in Egypt vital for the Red Sea marine ecosystem?",
+                    "correct_answer": "They prevent coastal erosion and provide a protected nursery shelter for baby marine organisms",
                     "misconception_presets": [
                         {
-                            "title": "Global Confusion",
-                            "answer": "global",
-                            "expected_misconception": "Conflating global module-level scope with enclosing closure scope"
+                            "title": "Abiotic Exclusion Fallacy",
+                            "answer": "Ecosystems only mean wild animals living together, water and rocks do not matter",
+                            "expected_misconception": "Excluding abiotic factors (soil, water, climate) from the ecosystem concept"
                         }
                     ]
                 }
@@ -127,80 +138,114 @@ COURSES_DATA = [
         ]
     },
     {
-        "course_id": "CS-301",
-        "course_title": "Data Structures & Algorithmic Complexity",
-        "code": "CS-301",
-        "description": "Analysis of data structures, graph representations, heap management, and asymptotic efficiency.",
-        "instructor": "Prof. Omar Farooq",
+        "course_id": "MATH-501",
+        "course_title": "الرياضيات — الصف الخامس الابتدائي",
+        "code": "MATH-501",
+        "description": "منهج وزارة التربية والتعليم الجديد: الكسور العشرية، جمع وطرح الكسور الاعتيادية، والعمليات الحسابية وع.م.أ وم.م.أ.",
+        "instructor": "أستاذ / محمد الشناوي (معلم خبير رياضيات)",
         "concepts": [
             {
-                "concept_id": "c_dyn_arr",
-                "concept_name": "Dynamic Arrays & Amortized Resizing",
-                "mastery": 0.76,
-                "stability": 8.0,
-                "last_practiced": "2026-09-16",
+                "concept_id": "c_decimals_place_value",
+                "concept_name": "الكسور العشرية والقيمة المكانية حتى الجزء من ألف",
+                "mastery": 0.35,
+                "stability": 2.0,
+                "last_practiced": "2026-09-29",
                 "course_evidence": (
-                    "Dynamic arrays allocate continuous blocks of contiguous memory. When capacity is exceeded, they allocate "
-                    "a new array of double (or 1.5x) the size and copy all elements over in O(N) time. However, across N appends, "
-                    "the average cost per append remains amortized O(1)."
+                    "يتكون الكسر العشري من عدد صحيح وعلامة عشرية وأجزاء: جزء من عشرة (Tenths)، جزء من مائة (Hundredths)، وجزء من ألف (Thousandths). "
+                    "لمقارنة كسرين عشريين، نقارن أولاً العدد الصحيح، ثم الأجزاء من اليسار إلى اليمين بعد موازنة عدد الخانات بوضع أصفار على اليمين. "
+                    "مثال: 0.8 = 0.800 وهي أكبر من 0.250 لأن 8 أجزاء من عشرة أكبر من جزءين من عشرة."
                 ),
                 "sample_question": {
-                    "question_id": "q_arr_01",
-                    "question_text": "What is the amortized time complexity of appending an element to a dynamic array (like Python list)?",
-                    "correct_answer": "Amortized O(1)",
+                    "question_id": "q_math_01",
+                    "question_text": "قارن بين العددين العشريين: 0.8 و 0.25 مستخدماً العلامة المناسبة (> أو < أو =).",
+                    "correct_answer": "0.8 > 0.25 لأن 0.8 تكافئ 0.80 جزءاً من مائة وهي أكبر من 0.25",
                     "misconception_presets": [
                         {
-                            "title": "Worst-case conflation",
-                            "answer": "Always O(N) because the array always resizes every single insert",
-                            "expected_misconception": "Confusing occasional O(N) resizing cost with everyday O(1) append"
+                            "title": "مغالطة مقارنة العدد الصحيح (Whole-Number Fallacy)",
+                            "answer": "0.25 أكبر من 0.8 لأن العدد 25 أكبر من العدد 8",
+                            "expected_misconception": "تجاهل القيمة المكانية ومعاملة الأجزاء العشرية كأعداد صحيحة عادية"
+                        },
+                        {
+                            "title": "مغالطة عدد الخانات",
+                            "answer": "0.25 أكبر لأنها مكونة من رقمين بينما 0.8 مكونة من رقم واحد فقط",
+                            "expected_misconception": "الاعتقاد بأن الكسر العشري ذو الأرقام الأكثر يكون هو الأكبر دائماً"
                         }
                     ]
                 }
             },
             {
-                "concept_id": "c_hash_coll",
-                "concept_name": "Hash Tables & Collision Resolution",
-                "mastery": 0.49,
-                "stability": 3.6,
-                "last_practiced": "2026-09-18",
+                "concept_id": "c_unlike_fractions",
+                "concept_name": "جمع وطرح الكسور غير متحدة المقام",
+                "mastery": 0.42,
+                "stability": 2.6,
+                "last_practiced": "2026-09-28",
                 "course_evidence": (
-                    "A hash table maps keys to indices using a hash function. When two distinct keys compute the same index, "
-                    "a collision occurs. Common strategies to resolve collisions include Separate Chaining (linked lists at each bucket) "
-                    "and Open Addressing with probing (Linear Probing, Quadratic Probing)."
+                    "لجمع أو طرح كسرين اعتياديين بمقامات مختلفة، يجب أولاً إيجاد المضاعف المشترك الأصغر للمقامين (م.م.أ) لتوحيد المقامات، "
+                    "ثم نجمع أو نطرح البسطين مع بقاء المقام الموحد ثابتاً كما هو دون تغيير. لا يجوز إطلاقاً جمع أو طرح المقامات. "
+                    "مثال: 1/2 + 1/3 = 3/6 + 2/6 = 5/6."
                 ),
                 "sample_question": {
-                    "question_id": "q_hash_01",
-                    "question_text": "In a hash table using separate chaining, what happens to lookup performance if all N keys hash to the same bucket?",
-                    "correct_answer": "Degrades from average O(1) to worst-case O(N) linear scan",
+                    "question_id": "q_math_02",
+                    "question_text": "احسب ناتج: 1/2 + 1/3 في أبسط صورة.",
+                    "correct_answer": "5/6 بعد توحيد المقامات على 6 (3/6 + 2/6 = 5/6)",
                     "misconception_presets": [
                         {
-                            "title": "Collision Overwrite Fallacy",
-                            "answer": "The new key simply overwrites the old key and deletes it",
-                            "expected_misconception": "Assuming hash tables overwrite colliding entries without resolution"
+                            "title": "مغالطة جمع المقامات (Across-Addition Fallacy)",
+                            "answer": "الناتج 2/5 بجمع البسط 1+1=2 وجمع المقام 2+3=5",
+                            "expected_misconception": "جمع البسط مع البسط والمقام مع المقام مباشرة دون توحيد المقامات"
                         }
                     ]
                 }
             },
             {
-                "concept_id": "c_bst_bal",
-                "concept_name": "Binary Search Trees & Balancing",
-                "mastery": 0.64,
-                "stability": 6.2,
-                "last_practiced": "2026-09-14",
+                "concept_id": "c_decimal_mult_div",
+                "concept_name": "ضرب وقسمة الأعداد العشرية في قوى العدد 10",
+                "mastery": 0.50,
+                "stability": 3.1,
+                "last_practiced": "2026-09-30",
                 "course_evidence": (
-                    "A Binary Search Tree maintains the invariant: left child < node < right child. In a balanced BST, "
-                    "search, insert, and delete operate in O(log N). If inserted in sorted order without rebalancing, "
-                    "the tree degenerates into a linked list with O(N) height."
+                    "عند ضرب كسر عشري في 10 أو 100 أو 1000، تتحرك العلامة العشرية جهة اليمين بعدد أصفار المضاعف (3.45 × 10 = 34.5). "
+                    "وعند القسمة على 10 أو 100 أو 1000، تتحرك العلامة العشرية جهة اليسار (25.8 ÷ 10 = 2.58). "
+                    "الضرب في 0.1 يعادل تماماً القسمة على 10."
                 ),
                 "sample_question": {
-                    "question_id": "q_bst_01",
-                    "question_text": "What is the worst-case height and search complexity of an un-balanced BST with N nodes?",
-                    "correct_answer": "Height N and search time O(N)",
+                    "question_id": "q_math_03",
+                    "question_text": "ما هو ناتج: 4.75 × 100 ؟",
+                    "correct_answer": "475 (تتحرك العلامة العشرية خانتين إلى اليمين)",
                     "misconception_presets": [
                         {
-                            "title": "Guaranteed Logarithmic Fallacy",
-                            "answer": "Search is always O(log N) no matter what order nodes are inserted",
-                            "expected_misconception": "Believing standard BSTs automatically self-balance like AVL or Red-Black trees"
+                            "title": "مغالطة اتجاه حركة العلامة العشرية",
+                            "answer": "0.0475 بتحريك العلامة جهة اليسار لأن الضرب يصغر الرقم",
+                            "expected_misconception": "الخلط بين اتجاه حركة العلامة في الضرب (يميناً) والقسمة (يساراً)"
+                        }
+                    ]
+                }
+            },
+            {
+                "concept_id": "c_gcf_lcm",
+                "concept_name": "العوامل والمضاعفات (ع.م.أ و م.م.أ)",
+                "mastery": 0.38,
+                "stability": 2.3,
+                "last_practiced": "2026-09-27",
+                "course_evidence": (
+                    "العامل المشترك الأكبر (ع.م.أ) هو أكبر عدد يقسم كلا العددين معاً، ونستخرجه بضرب العوامل الأولية المشتركة فقط. "
+                    "المضاعف المشترك الأصغر (م.م.أ) هو أصغر عدد يقبل القسمة على كلا العددين، ونستخرجه بضرب جميع العوامل الأولية المشتركة وغير المشتركة. "
+                    "للعددين 6 (2×3) و 8 (2×2×2): ع.م.أ = 2، بينما م.م.أ = 2×3×2×2 = 24."
+                ),
+                "sample_question": {
+                    "question_id": "q_math_04",
+                    "question_text": "أوجد العامل المشترك الأكبر (ع.م.أ) والمضاعف المشترك الأصغر (م.م.أ) للعددين 6 و 8.",
+                    "correct_answer": "ع.م.أ = 2 ، و م.م.أ = 24",
+                    "misconception_presets": [
+                        {
+                            "title": "مغالطة التبديل بين العامل والمضاعف",
+                            "answer": "ع.م.أ = 24 و م.م.أ = 2",
+                            "expected_misconception": "عكس مفهوم العامل والمضاعف بسبب كلمة 'الأكبر' و 'الأصغر'"
+                        },
+                        {
+                            "title": "مغالطة الضرب المباشر للمضاعف",
+                            "answer": "م.م.أ هو حاصل ضرب 6 × 8 = 48 دائماً",
+                            "expected_misconception": "إهمال العوامل الأولية المشتركة وافتراض أن م.م.أ دائماً ضرب العددين"
                         }
                     ]
                 }
