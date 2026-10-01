@@ -1,69 +1,61 @@
-# 🧠 Cognitive Twin AI Agent (Learner Intelligence & Adaptation Engine)
+# 🧠 Cognitive Twin AI Agent (Pure AI Cognitive Layer)
 
-This module represents the **Cognitive Twin & Adaptation Engine** for adaptive learning platforms.
+This directory is dedicated strictly to the **Pure AI Agents and Cognitive Modeling Layer** (zero web/UI bloat).
 
-It models the student's evolving knowledge state, detects underlying cognitive misconceptions, calibrates question difficulty in the Zone of Proximal Development (ZPD), and executes pedagogical decision trees (Escalation, Remediation, Socratic Tutoring, Practice).
+All web servers, REST API routes, and interactive frontend prototypes have been isolated into [`SLA system/`](../SLA%20system).
 
 ---
 
-## 📁 Architecture & Structure
+## 📁 Pure AI Architecture & Structure
 
 ```
 Cognitive_Twin_AI_Agent/
-├── ai_agents/                  # Standalone pure Python AI Agents (zero web dependencies)
-│   ├── __init__.py             # Unified package export
-│   ├── cognitive_twin_agent.py # BKT & Ebbinghaus forgetting curve (R = e^-t/S)
-│   ├── misconception_agent.py  # Error pattern analysis & state linking
-│   ├── adaptive_assessment_agent.py # ZPD & Bloom's taxonomy difficulty calibration
-│   ├── next_action_agent.py    # Pedagogical decision rules & tutor prompts
-│   ├── closed_loop_agent.py    # End-to-end learning cycle pipeline & webhooks
-│   └── README.md               # Quickstart and Python usage guide
-├── backend/                    # FastAPI Microservice & API Endpoints
-│   ├── main.py                 # FastAPI application root
-│   ├── api/                    # Modular REST endpoints
-│   ├── engine/                 # Engine implementations
-│   └── models/                 # Strictly typed Pydantic v2 schemas
-└── requirements.txt            # Dependency specifications
+├── ai_agents/                       # Standalone pure Python AI Agents (Zero web dependencies)
+│   ├── __init__.py                  # Unified package exports
+│   ├── cognitive_twin_agent.py      # Agent 1: BKT & Ebbinghaus forgetting curve (R = e^-t/S)
+│   ├── misconception_agent.py       # Agent 2: Error pattern analysis & cognitive state linking
+│   ├── adaptive_assessment_agent.py # Agent 3: ZPD & Bloom's taxonomy difficulty calibration
+│   ├── next_action_agent.py         # Agent 4: Pedagogical decision rules & Socratic tutor prompts
+│   ├── closed_loop_agent.py         # Agent 5: End-to-end learning cycle pipeline & webhooks
+│   └── README.md                    # Quickstart and Python usage guide
+└── requirements.txt                 # Pure AI dependencies (pydantic, numpy, openai, anthropic)
 ```
 
 ---
 
-## 🚀 Quick Usage (Python Standalone)
+## 🚀 Standalone Python Usage
 
 ```python
-from Cognitive_Twin_AI_Agent.ai_agents import (
+from ai_agents import (
     CognitiveTwinAgent, ConceptState,
     ClosedLoopOrchestratorAgent
 )
 
-# Initialize concept state
-state = ConceptState(concept_id="c_python_ptr", concept_name="Pointers & Memory")
+# 1. Initialize student concept state
+state = ConceptState(concept_id="c_math_p5_01", concept_name="Place Value & Decimals")
 
-# Run an adaptive learning cycle
+# 2. Run an adaptive learning cycle
 result = ClosedLoopOrchestratorAgent.run_cycle(
-    learner_id="student_101",
-    concept_id="c_python_ptr",
-    concept_name="Pointers & Memory",
+    learner_id="STD-PRI5-104",
+    concept_id="c_math_p5_01",
+    concept_name="Place Value & Decimals",
     current_state=state,
     attempts=[],
-    current_question="How are pointers assigned?",
-    correct_answer="By memory reference",
-    learner_answer="By value copy",
+    current_question="In 45.678, what is the value of 7?",
+    correct_answer="0.07",
+    learner_answer="0.7",
     is_correct=False,
-    course_evidence="Pointers pass memory addresses by reference without duplicating data.",
+    course_evidence="The digit 7 is in the hundredths place.",
     attempt_number=1
 )
 
-print(f"Updated Mastery: {result.updated_cognitive_state.p_known}")
-print(f"Prescribed Action: {result.prescribed_action.action_type.value}")
+print(f"Updated Mastery (BKT): {result.updated_cognitive_state.p_known:.2f}")
+print(f"Prescribed Pedagogical Action: {result.prescribed_action.action_type.value}")
 ```
 
 ---
 
-## ⚡ Running the FastAPI Engine
+## 🔗 Software Layer Link
 
-```bash
-cd Cognitive_Twin_AI_Agent
-pip install -r requirements.txt
-python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
-```
+For the interactive Web UI and FastAPI backend server, see:
+👉 **[`SLA system/`](../SLA%20system)**

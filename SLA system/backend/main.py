@@ -37,11 +37,16 @@ from backend.api.misconception_routes import router as misconception_router
 from backend.api.assessment_routes import router as assessment_router
 from backend.api.next_action_routes import router as next_action_router
 
-# ── AI #1: Course Intelligence & Grounding Imports ──
+# ── System & AI Paths Setup ──
 import sys
-WORKSPACE_ROOT = Path(__file__).resolve().parent.parent.parent
-if str(WORKSPACE_ROOT) not in sys.path:
-    sys.path.insert(0, str(WORKSPACE_ROOT))
+SLA_SYSTEM_ROOT = Path(__file__).resolve().parent.parent
+WORKSPACE_ROOT = SLA_SYSTEM_ROOT.parent
+COGNITIVE_TWIN_ROOT = WORKSPACE_ROOT / "Cognitive_Twin_AI_Agent"
+AI_AGENTS_ROOT = COGNITIVE_TWIN_ROOT / "ai_agents"
+
+for _p in [str(WORKSPACE_ROOT), str(SLA_SYSTEM_ROOT), str(COGNITIVE_TWIN_ROOT), str(AI_AGENTS_ROOT)]:
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 try:
     from Course_Aware_RAG_Agent.api.upload_routes import router as ingestion_router
